@@ -30,7 +30,7 @@ exports.signup = (req, res, next) => {
             return next(err);
         }
 
-        const { email, name, role, about, history } = user;
+        const { email, name, role, about, history, id } = user;
         // return response with JWT Token and user details
         res.json({
             token: tokenForUser(user),
@@ -39,13 +39,14 @@ exports.signup = (req, res, next) => {
             role,
             about,
             history,
+            id,
         });
     });
 };
 
-exports.signin = function (req, res, next) {
+exports.signin = (req, res, next) => {
     // user has already been authenticated using Passport middleware
-    const { email, name, role, about, history } = req.user;
+    const { email, name, role, about, history, id } = req.user;
     // return response with JWT Token and user details
     res.json({
         token: tokenForUser(req.user),
@@ -54,5 +55,16 @@ exports.signin = function (req, res, next) {
         role,
         about,
         history,
+        id,
     });
+};
+
+exports.isAdmin = (req, res, next) => {
+    if (req.profile.role === 0) {
+        return res.status(403).json({
+            error: 'Admin resource! Access denied',
+        });
+    }
+
+    next();
 };

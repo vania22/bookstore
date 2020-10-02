@@ -9,6 +9,7 @@ const app = require('express')();
 
 // Import routes
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 
 // Connect to DataBase
 mongoose
@@ -25,8 +26,9 @@ app.use(bodyParser.json({ type: '*/*' }));
 app.use(cookieParser());
 // app.use(expressValidator());
 
-// Set routes - this .use() method should be below others!!!
+// Set routes - these methods should be below others .use() methods!!!
 app.use(authRoutes);
+app.use(userRoutes);
 
 const port = process.env.PORT || 8000;
 
