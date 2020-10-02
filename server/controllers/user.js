@@ -1,22 +1,58 @@
+const jwt = require('jwt-simple');
 const User = require('../models/user');
-const { errorHandler } = require('../helpers/dbErrorHandler');
 
-exports.signup = (req, res) => {
-    console.log(req.body);
+// Method to generate JWT Token
+function tokenForUser(user) {
+    const timestamp = new Date().getTime();
+    return jwt.encode({ sub: user.id, iat: timestamp }, process.env.JWT_SECRET);
+}
+
+exports.signup = (req, res, next) => {
+    const email = req.body.email;
+
+    // See if a user with the given email exists
+    User.findOne({ email }, function (err, existingUser) {
+        if (err) {
+            return next(err);
+        }
+        //If a user with email exists throw an error
+        if (existingUser) {
+            return res.status(422).send({ error: 'Email is in use' });
+        }
+    });
+
+    //If a user doesn't exist CREATE user (save email and password)
     const user = new User(req.body);
 
+    // Save user in DB
     user.save((err, user) => {
         if (err) {
-            return res.status(400).json({
-                error: errorHandler(err),
-            });
+            return next(err);
         }
 
-        user.hashed_password = undefined;
-        user.salt = undefined;
-
+        const { email, name, role, about, history } = user;
+        // return response with JWT Token and user details
         res.json({
-            user,
+            token: tokenForUser(user),
+            email,
+            name,
+            role,
+            about,
+            history,
         });
+    });
+};
+
+exports.signin = function (req, res, next) {
+    // user has already been authenticated using Passport middleware
+    const { email, name, role, about, history } = req.user;
+    // return response with JWT Token and user details
+    res.json({
+        token: tokenForUser(req.user),
+        email,
+        name,
+        role,
+        about,
+        history,
     });
 };

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const crypto = require('crypto');
-const { v1: uuidv1 } = require('uuid');
+const bcrypt = require('bcrypt-nodejs');
 
 // User model below:
 const userSchema = new mongoose.Schema(
@@ -18,7 +17,7 @@ const userSchema = new mongoose.Schema(
             maxlength: 32,
             unique: true,
         },
-        hashed_password: {
+        password: {
             type: String,
             required: true,
         },
@@ -41,29 +40,32 @@ const userSchema = new mongoose.Schema(
     { timestamps: true },
 );
 
-// Virtual fields below:
+// Pre-save process - encrypting password:
+userSchema.pre('save', function (next) {
+    const user = this;
 
-userSchema
-    .virtual('password')
-    .set(function (password) {
-        this._password = password;
-        this.salt = uuidv1();
-        this.hashed_password = this.encryptPassword(password);
-    })
-    .get(() => this._password);
+    // Generate a salt and run callback
+    bcrypt.genSalt(10, function (err, salt) {
+        if (err) return next(err);
 
-userSchema.methods = {
-    encryptPassword: function (password) {
-        if (!password) return null;
-        try {
-            return crypto
-                .createHmac('sha1', this.salt)
-                .update(password)
-                .digest('hex');
-        } catch (error) {
-            return null;
-        }
-    },
+        // Has the password using salt
+        bcrypt.hash(user.password, salt, null, function (err, hash) {
+            if (err) return next(err);
+
+            // Overwrite plain password with hashed one
+            user.password = hash;
+            next();
+        });
+    });
+});
+
+// Defining a method to compare plain password to the hashed one
+userSchema.methods.comparePasswords = function (plainPassword, callBack) {
+    bcrypt.compare(plainPassword, this.password, function (err, result) {
+        if (err) return callBack(err);
+
+        callBack(null, result);
+    });
 };
 
 const User = mongoose.model('User', userSchema);
