@@ -8,7 +8,7 @@ const expressValidator = require('express-validator');
 const app = require('express')();
 
 // Import routes
-const userRoutes = require('./routes/user');
+const authRoutes = require('./routes/auth');
 
 // Connect to DataBase
 mongoose
@@ -26,7 +26,7 @@ app.use(cookieParser());
 // app.use(expressValidator());
 
 // Set routes - this .use() method should be below others!!!
-app.use(userRoutes);
+app.use(authRoutes);
 
 const port = process.env.PORT || 8000;
 
