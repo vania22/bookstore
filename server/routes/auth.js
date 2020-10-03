@@ -17,8 +17,5 @@ const { signup, signin } = require('../controllers/auth');
 
 router.post('/signup', signUpValidationRules(), validate, signup);
 router.post('/signin', requireSignIn, signin);
-router.get('/', requireAuth, function (req, res) {
-    res.send({ hi: req.user });
-});
 
 module.exports = router;
