@@ -7,13 +7,20 @@ const passport = require('passport');
 const requireAuth = passport.authenticate('jwt', { session: false });
 
 // controllers
-const { create, productById, read, remove } = require('../controllers/product');
+const {
+    create,
+    productById,
+    read,
+    remove,
+    update,
+} = require('../controllers/product');
 const { isAdmin } = require('../controllers/auth');
 const { userById } = require('../controllers/user');
 
 router.post('/product/create/:userId', requireAuth, isAdmin, create);
 router.get('/product/:productId', read);
 router.delete('/product/:productId/:userId', requireAuth, isAdmin, remove);
+router.put('/product/:productId/:userId', requireAuth, isAdmin, update);
 
 router.param('userId', userById);
 router.param('productId', productById);
