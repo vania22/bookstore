@@ -7,6 +7,7 @@ function tokenForUser(user) {
     return jwt.encode({ sub: user.id, iat: timestamp }, process.env.JWT_SECRET);
 }
 
+// Sign Up controller
 exports.signup = (req, res, next) => {
     const email = req.body.email;
 
@@ -44,6 +45,7 @@ exports.signup = (req, res, next) => {
     });
 };
 
+// Sign In controller
 exports.signin = (req, res, next) => {
     // user has already been authenticated using Passport middleware
     const { email, name, role, about, history, id } = req.user;
@@ -59,6 +61,7 @@ exports.signin = (req, res, next) => {
     });
 };
 
+// Is Admin middleware, checks if user is admin or not
 exports.isAdmin = (req, res, next) => {
     if (req.profile.role === 0) {
         return res.status(403).json({
