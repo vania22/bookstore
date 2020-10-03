@@ -12,4 +12,4 @@ Tech-stack:
   Front-end:
     React Js
     
- Hoping to get this done and move on to a new project :)
+ Hoping to get this done and move on to a new project :) 
