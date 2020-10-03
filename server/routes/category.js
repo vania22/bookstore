@@ -7,12 +7,24 @@ const passport = require('passport');
 const requireAuth = passport.authenticate('jwt', { session: false });
 
 // controllers
-const { create } = require('../controllers/category');
+const {
+    categoryById,
+    create,
+    read,
+    list,
+    remove,
+    update,
+} = require('../controllers/category');
 const { isAdmin } = require('../controllers/auth');
 const { userById } = require('../controllers/user');
 
 router.post('/category/create/:userId', requireAuth, isAdmin, create);
+router.get('/category/:categoryId', read);
+router.get('/categories', list);
+router.put('/category/:categoryId/:userId', requireAuth, isAdmin, update);
+router.delete('/category/:categoryId/:userId', requireAuth, isAdmin, remove);
 
 router.param('userId', userById);
+router.param('categoryId', categoryById);
 
 module.exports = router;

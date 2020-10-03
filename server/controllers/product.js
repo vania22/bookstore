@@ -47,21 +47,8 @@ exports.create = (req, res) => {
                 });
             }
 
-            res.json({ product });
+            return res.json({ product });
         });
-    });
-};
-
-// Takes id from productId parameter and returns entire product object to req.product
-exports.productById = (req, res, next, id) => {
-    Product.findById(id).exec((err, product) => {
-        if (err || !product) {
-            return res.status(404).json({
-                error: 'Product not found',
-            });
-        }
-        req.product = product;
-        next();
     });
 };
 
@@ -140,8 +127,24 @@ exports.update = (req, res) => {
                     });
                 }
 
-                return res.json({ updatedProduct });
+                return res.json({
+                    updatedProduct,
+                    result: 'Product has been successfully updated',
+                });
             },
         );
+    });
+};
+
+// Takes id from productId parameter and returns entire product object to req.product
+exports.productById = (req, res, next, id) => {
+    Product.findById(id).exec((err, product) => {
+        if (err || !product) {
+            return res.status(404).json({
+                error: 'Product not found',
+            });
+        }
+        req.product = product;
+        next();
     });
 };
