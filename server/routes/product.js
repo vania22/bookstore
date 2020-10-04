@@ -11,6 +11,11 @@ const {
     create,
     productById,
     read,
+    photo,
+    list,
+    listRelated,
+    listBySearch,
+    listCategories,
     remove,
     update,
 } = require('../controllers/product');
@@ -19,6 +24,11 @@ const { userById } = require('../controllers/user');
 
 router.post('/product/create/:userId', requireAuth, isAdmin, create);
 router.get('/product/:productId', read);
+router.get('/product/photo/:productId', photo);
+router.get('/products', list);
+router.get('/products/related/:productId', listRelated);
+router.get('/products/categories/', listCategories);
+router.post('/products/by/search', listBySearch);
 router.put('/product/:productId/:userId', requireAuth, isAdmin, update);
 router.delete('/product/:productId/:userId', requireAuth, isAdmin, remove);
 

@@ -5,7 +5,7 @@ exports.create = (req, res) => {
     const category = new Category({ name: req.body.name });
     category.save((err, category) => {
         if (err) {
-            return res.status(500).json({
+            return res.status(400).json({
                 error: 'please try again later',
             });
         }

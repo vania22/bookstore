@@ -77,6 +77,15 @@ exports.remove = (req, res) => {
     });
 };
 
+exports.photo = (req, res) => {
+    if (req.product.photo.data) {
+        res.set('Content-Type', req.product.photo.contentType);
+        return res.send(req.product.photo.data);
+    }
+
+    next();
+};
+
 // Updates product by it's Id
 exports.update = (req, res) => {
     // Intercept form from request
@@ -133,6 +142,108 @@ exports.update = (req, res) => {
                 });
             },
         );
+    });
+};
+
+/**
+ * Sell / Arrival
+ *  By sell = /products?sortBy=sold&order=desc&limit=4
+ * By sell = /products?sortBy=createdAt&order=desc&limit=4
+ * If no params sent, then all products are returned
+ */
+
+exports.list = (req, res) => {
+    let order = req.query.order ? req.query.order : 'desc';
+    let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
+    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+
+    Product.find()
+        .select('-photo')
+        .populate('category')
+        .sort([[sortBy, order]])
+        .limit(limit)
+        .exec((err, products) => {
+            if (err) {
+                return res
+                    .status(400)
+                    .json({ error: 'Products not found', err: err.message });
+            }
+
+            return res.send(products);
+        });
+};
+
+/**
+ * Find products based on the req product category
+ */
+exports.listRelated = (req, res) => {
+    let relatedCategory = req.product.category;
+    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+
+    Product.find({ category: relatedCategory })
+        .sort([['sold', 'desc']])
+        .limit(limit)
+        .exec((err, products) => {
+            if (err || !products) {
+                return res
+                    .status(400)
+                    .json({ error: "Can't find related products" });
+            }
+
+            return res.json(products);
+        });
+};
+
+exports.listBySearch = (req, res) => {
+    let order = req.query.order ? req.query.order : 'desc';
+    let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
+    let limit = req.query.limit ? parseInt(req.query.limit) : 100;
+    let skip = parseInt(req.body.skip);
+    let findArgs = {};
+
+    for (let key in req.body.filters) {
+        if (req.body.filters[key].length > 0) {
+            if (key === 'price') {
+                // gte -  greater than price [0-10]
+                // lte - less than
+                findArgs[key] = {
+                    $gte: req.body.filters[key][0],
+                    $lte: req.body.filters[key][1],
+                };
+            } else {
+                findArgs[key] = req.body.filters[key];
+            }
+        }
+    }
+
+    Product.find(findArgs)
+        .select('-photo')
+        .populate('category')
+        .sort([[sortBy, order]])
+        .skip(skip)
+        .limit(limit)
+        .exec((err, data) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'Products not found',
+                });
+            }
+            res.json({
+                size: data.length,
+                data,
+            });
+        });
+};
+
+// Returns list of categories Ids which have products linked to them,
+// ignoring empty categories
+exports.listCategories = (req, res) => {
+    Product.distinct('category', {}, (err, categories) => {
+        if (err || !categories) {
+            return res.status(400).json({ error: 'Categories not found' });
+        }
+
+        return res.json(categories);
     });
 };
 
