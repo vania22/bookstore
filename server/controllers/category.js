@@ -41,7 +41,8 @@ exports.update = (req, res) => {
 
     Category.findByIdAndUpdate(
         req.category._id,
-        { name: req.body.name },
+        req.body,
+        { new: true },
         (err, category) => {
             if (err || !category) {
                 return res

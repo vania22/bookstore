@@ -129,6 +129,7 @@ exports.update = (req, res) => {
         Product.findByIdAndUpdate(
             req.product._id,
             product,
+            { new: true },
             (err, updatedProduct) => {
                 if (err || !product) {
                     return res.status(404).json({
@@ -194,6 +195,13 @@ exports.listRelated = (req, res) => {
         });
 };
 
+/**
+ * list products by search
+ * This will method will be cooperating with Front-End
+ * User will be able to filter products based on category or price range
+ * As the user manipulates with filters, api request will be made and
+ * Return the products to the users based on his manipulations with filters
+ */
 exports.listBySearch = (req, res) => {
     let order = req.query.order ? req.query.order : 'desc';
     let sortBy = req.query.sortBy ? req.query.sortBy : '_id';

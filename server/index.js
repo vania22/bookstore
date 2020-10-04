@@ -3,6 +3,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = require('express')();
 
@@ -23,6 +24,7 @@ mongoose
     .then(() => console.log('connected to database'));
 
 // Feeding middlewares to express:
+app.use(cors());
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 

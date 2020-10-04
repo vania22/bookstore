@@ -7,12 +7,15 @@ const passport = require('passport');
 const requireAuth = passport.authenticate('jwt', { session: false });
 
 // controllers
-const { userById } = require('../controllers/user');
+const { userById, read, update } = require('../controllers/user');
 const { isAdmin } = require('../controllers/auth');
 
 router.get('/secret/:userId', requireAuth, isAdmin, (req, res) => {
     res.json({ user: req.profile });
 });
+
+router.get('/user/:userId', requireAuth, read);
+router.put('/user/:userId', requireAuth, update);
 
 router.param('userId', userById);
 
