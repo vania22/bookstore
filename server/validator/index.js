@@ -21,7 +21,7 @@ const signUpValidationRules = () => {
             .notEmpty()
             .withMessage('Name is required')
             .isLength({ max: 32 })
-            .withMessage('Name must be contain less than 32 characters'),
+            .withMessage('Name must contain less than 32 characters'),
     ];
 };
 
