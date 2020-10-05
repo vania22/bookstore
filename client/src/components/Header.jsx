@@ -5,9 +5,8 @@ import { isAuthenticated } from "../api/api";
 
 const Header = () => {
   const { pathname } = useLocation();
-
   const [activeLink, setActiveLink] = useState(pathname);
-
+  const { user } = isAuthenticated();
   const signOut = () => {
     window.localStorage.removeItem("jwt");
   };
@@ -24,7 +23,7 @@ const Header = () => {
             Home
           </Link>
         </li>
-        {!isAuthenticated() ? (
+        {!user ? (
           <>
             <li className="nav-item">
               <Link
@@ -46,7 +45,12 @@ const Header = () => {
         ) : (
           <>
             <li className="nav-item">
-              <Link className="nav-link text-white" to="/dashboard">
+              <Link
+                className={`nav-link ${
+                  activeLink.includes("/dashboard") ? "text-warning" : "text-white"
+                }`}
+                to={user.role === 1 ? "/admin/dashboard" : "/user/dashboard"}
+              >
                 Dashboard
               </Link>
             </li>

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Layout from "./Layout";
 import { isAuthenticated } from "../api/api";
 
-const UserDashboard = () => {
+const AdminDashboard = () => {
   const {
     user: { _id, name, email, role, history },
   } = isAuthenticated();
@@ -14,10 +14,13 @@ const UserDashboard = () => {
       <div className="row">
         <div className="col-3">
           <div className="card">
-            <h3 className="card-header">User Links</h3>
+            <h3 className="card-header">Admin Links</h3>
             <ul className="list-group">
               <li className="list-group-item">
-                <Link to="/cart">My Cart</Link>
+                <Link to="/create/category">Create Category</Link>
+              </li>
+              <li className="list-group-item">
+                <Link to="/create/product">Create Product</Link>
               </li>
               <li className="list-group-item">
                 <Link to="/profile/udpate">Update Profile</Link>
@@ -31,13 +34,7 @@ const UserDashboard = () => {
             <ul className="list-group">
               <li className="list-group-item">Name: {name}</li>
               <li className="list-group-item">Email: {email}</li>
-              <li className="list-group-item">Role: Registered User</li>
-            </ul>
-          </div>
-          <div className="card mb-5">
-            <h3 className="card-header">Purchase History</h3>
-            <ul className="list-group">
-              <li className="list-group-item">Item</li>
+              <li className="list-group-item">Role: Administrator</li>
             </ul>
           </div>
         </div>
@@ -46,4 +43,4 @@ const UserDashboard = () => {
   );
 };
 
-export default UserDashboard;
+export default AdminDashboard;

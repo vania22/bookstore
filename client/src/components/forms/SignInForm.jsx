@@ -3,13 +3,14 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Redirect } from "react-router-dom";
 
-import { signIn } from "../../api/api";
+import { isAuthenticated, signIn } from "../../api/api";
 import ErrorLabel from "./ErrorLabel";
 
 const SignInForm = () => {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [redirect, setRedirect] = useState(false);
+  const [isRedirect, setIsRedirect] = useState(false);
+  const { user } = isAuthenticated();
 
   const initialValues = {
     email: "krupskiy111@gmail.com",
@@ -32,7 +33,7 @@ const SignInForm = () => {
         onSubmitProps.resetForm({});
         setError(false);
         setIsLoading(false);
-        setRedirect(true);
+        setIsRedirect(true);
       },
       () => {
         onSubmitProps.setSubmitting(false);
@@ -42,9 +43,21 @@ const SignInForm = () => {
     );
   };
 
+  const redirect = () => {
+    if (isRedirect) {
+      if (user.role === 1) {
+        return <Redirect to="/admin/dashboard" />;
+      } else if (user.role === 0) {
+        return <Redirect to="/user/dashboard" />;
+      }
+    } else {
+      return null;
+    }
+  };
+
   return (
     <>
-      {redirect && <Redirect to="/" />}
+      {redirect()}
       {error && <div className="alert alert-danger">Incorrect email or password</div>}
       <Formik
         initialValues={initialValues}
