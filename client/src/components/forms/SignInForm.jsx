@@ -13,7 +13,7 @@ const SignInForm = () => {
   const [redirect, setRedirect] = useState(false);
 
   const initialValues = {
-    email: "",
+    email: "krupskiy111@gmail.com",
     password: "",
   };
 
@@ -30,6 +30,7 @@ const SignInForm = () => {
           "Content-Type": "application/json",
         },
       });
+      window.localStorage.setItem("jwt", JSON.stringify(response.data));
       onSubmitProps.setSubmitting(false);
       onSubmitProps.resetForm({});
       setError(false);

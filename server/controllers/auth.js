@@ -48,16 +48,16 @@ exports.signup = (req, res, next) => {
 // Sign In controller
 exports.signin = (req, res, next) => {
     // user has already been authenticated using Passport middleware
-    const { email, name, role, about, history, id } = req.user;
+    const { email, name, role, _id } = req.user;
     // return response with JWT Token and user details
     res.json({
         token: tokenForUser(req.user),
-        email,
-        name,
-        role,
-        about,
-        history,
-        id,
+        user: {
+            email,
+            name,
+            role,
+            _id,
+        },
     });
 };
 
