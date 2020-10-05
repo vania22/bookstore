@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import { Redirect } from "react-router-dom";
 
-import { API } from "../../constants/constants";
+import { signIn } from "../../api/api";
 import ErrorLabel from "./ErrorLabel";
 
 const SignInForm = () => {
@@ -23,24 +22,24 @@ const SignInForm = () => {
   });
 
   const onSubmit = async (values, onSubmitProps) => {
-    try {
-      setIsLoading(true);
-      let response = await axios.post(`${API.ENDPOINT}/signin`, JSON.stringify(values), {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      window.localStorage.setItem("jwt", JSON.stringify(response.data));
-      onSubmitProps.setSubmitting(false);
-      onSubmitProps.resetForm({});
-      setError(false);
-      setIsLoading(false);
-      setRedirect(true);
-    } catch (error) {
-      onSubmitProps.setSubmitting(false);
-      setIsLoading(false);
-      setError(true);
-    }
+    setIsLoading(true);
+
+    signIn(
+      values,
+      (response) => {
+        window.localStorage.setItem("jwt", JSON.stringify(response.data));
+        onSubmitProps.setSubmitting(false);
+        onSubmitProps.resetForm({});
+        setError(false);
+        setIsLoading(false);
+        setRedirect(true);
+      },
+      () => {
+        onSubmitProps.setSubmitting(false);
+        setIsLoading(false);
+        setError(true);
+      }
+    );
   };
 
   return (

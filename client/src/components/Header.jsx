@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-const Menu = () => {
+import { isAuthenticated } from "../api/api";
+
+const Header = () => {
   const { pathname } = useLocation();
 
   const [activeLink, setActiveLink] = useState(pathname);
 
   const signOut = () => {
     window.localStorage.removeItem("jwt");
-  };
-
-  const isAuthenticated = () => {
-    if (window.localStorage.getItem("jwt")) {
-      return JSON.parse(localStorage.getItem("jwt"));
-    } else {
-      return false;
-    }
   };
 
   useEffect(() => {
@@ -61,4 +55,4 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default Header;

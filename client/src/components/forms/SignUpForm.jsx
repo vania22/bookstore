@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 
-import { API } from "../../constants/constants";
+import { signUp } from "../../api/api";
 import ErrorLabel from "./ErrorLabel";
 import { Link } from "react-router-dom";
 
@@ -32,19 +31,18 @@ const SignUpForm = () => {
       ),
   });
 
-  const onSubmit = async (values, onSubmitProps) => {
-    try {
-      let response = await axios.post(`${API.ENDPOINT}/signup`, JSON.stringify(values), {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      onSubmitProps.resetForm({});
-      setError(null);
-      setSuccess(true);
-    } catch (error) {
-      setError(error.response.data.error);
-    }
+  const onSubmit = (values, onSubmitProps) => {
+    signUp(
+      values,
+      () => {
+        onSubmitProps.resetForm({});
+        setError(false);
+        setSuccess(true);
+      },
+      () => {
+        setError(true);
+      }
+    );
     onSubmitProps.setSubmitting(false);
   };
 
@@ -52,7 +50,7 @@ const SignUpForm = () => {
     <>
       {success && (
         <div className="alert alert-info">
-          Your account has been created. Please{" "}
+          Your account has been created. Please
           <Link to="/signin" style={{ textDecoration: "underline" }}>
             sign in.
           </Link>
@@ -90,7 +88,7 @@ const SignUpForm = () => {
                 className="form-control"
                 autoComplete="off"
               />
-              {error && <ErrorLabel>{error}</ErrorLabel>}
+              {error && <ErrorLabel>Email address is in use</ErrorLabel>}
               <ErrorMessage name="email" component={ErrorLabel} />
             </div>
             <div className="form-group">
