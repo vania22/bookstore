@@ -30,6 +30,7 @@ export const signIn = async (values, onSuccessCallBack, onErrorCallback) => {
   }
 };
 
+// Returns user object with user name, email, id,
 export const isAuthenticated = () => {
   if (typeof window == undefined) {
     return false;
