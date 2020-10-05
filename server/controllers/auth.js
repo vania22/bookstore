@@ -17,31 +17,33 @@ exports.signup = (req, res, next) => {
             return next(err);
         }
         //If a user with email exists throw an error
-        if (existingUser) {
+        else if (existingUser) {
             return res.status(422).send({ error: 'Email is in use' });
         }
-    });
+        // If there is no user with given email and no error - proceed with new user creation
+        else if (!err || !existingUser) {
+            //If a user doesn't exist CREATE user (save email and password)
+            const user = new User(req.body);
 
-    //If a user doesn't exist CREATE user (save email and password)
-    const user = new User(req.body);
+            // Save user in DB
+            user.save((err, user) => {
+                if (err) {
+                    return next(err);
+                }
 
-    // Save user in DB
-    user.save((err, user) => {
-        if (err) {
-            return next(err);
+                const { email, name, role, _id } = user;
+                // return response with JWT Token and user details
+                res.json({
+                    token: tokenForUser(user),
+                    user: {
+                        email,
+                        name,
+                        role,
+                        _id,
+                    },
+                });
+            });
         }
-
-        const { email, name, role, _id } = user;
-        // return response with JWT Token and user details
-        res.json({
-            token: tokenForUser(user),
-            user: {
-                email,
-                name,
-                role,
-                _id,
-            },
-        });
     });
 };
 

@@ -44,14 +44,12 @@ const SignInForm = () => {
   };
 
   const redirect = () => {
-    if (isRedirect) {
-      if (user.role === 1) {
-        return <Redirect to="/admin/dashboard" />;
-      } else if (user.role === 0) {
-        return <Redirect to="/user/dashboard" />;
-      }
-    } else {
+    if (!user) {
       return null;
+    } else if (user.role === 1) {
+      return <Redirect to="/admin/dashboard" />;
+    } else if (user.role === 0) {
+      return <Redirect to="/user/dashboard" />;
     }
   };
 

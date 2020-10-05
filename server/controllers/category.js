@@ -2,15 +2,28 @@ const Category = require('../models/category');
 
 // Creates new category
 exports.create = (req, res) => {
-    const category = new Category({ name: req.body.name });
-    category.save((err, category) => {
+    const { name } = req.body;
+
+    Category.findOne({ name }, (err, category) => {
         if (err) {
-            return res.status(400).json({
-                error: 'please try again later',
+            return res.status(400).json({ error: err.message });
+        } else if (category) {
+            return res
+                .status(400)
+                .json({ error: 'Category with given name already exists' });
+        } else if (!err || !category) {
+            const category = new Category({ name });
+
+            category.save((err, category) => {
+                if (err) {
+                    return res.status(400).json({
+                        error: 'please try again later',
+                    });
+                }
+
+                return res.json({ category });
             });
         }
-
-        return res.json({ category });
     });
 };
 
@@ -35,27 +48,35 @@ exports.remove = (req, res) => {
 
 // Updates category by it's Id
 exports.update = (req, res) => {
-    if (!req.body.name) {
-        return res.status(400).json({ error: 'name must be provided' });
-    }
+    const { name } = req.body;
 
-    Category.findByIdAndUpdate(
-        req.category._id,
-        req.body,
-        { new: true },
-        (err, category) => {
-            if (err || !category) {
-                return res
-                    .status(400)
-                    .json({ error: "Category can't be updated" });
-            }
+    Category.findOne({ name }, (err, category) => {
+        if (err) {
+            return res.status(400).json({ error: err });
+        } else if (category) {
+            return res
+                .status(400)
+                .json({ error: 'Category with given name already exists' });
+        } else if (!err && !category) {
+            Category.findByIdAndUpdate(
+                req.category._id,
+                req.body,
+                { new: true },
+                (err, category) => {
+                    if (err || !category) {
+                        return res
+                            .status(400)
+                            .json({ error: "Category can't be updated" });
+                    }
 
-            return res.json({
-                category,
-                result: 'Category has been successfully updated',
-            });
-        },
-    );
+                    return res.json({
+                        category,
+                        result: 'Category has been successfully updated',
+                    });
+                },
+            );
+        }
+    });
 };
 
 // Returns array of all categories

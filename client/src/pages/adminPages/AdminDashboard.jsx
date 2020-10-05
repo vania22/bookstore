@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import Layout from "./Layout";
-import { isAuthenticated } from "../api/api";
+import Layout from "../Layout";
+import { isAuthenticated } from "../../api/api";
 
 const AdminDashboard = () => {
   const {
