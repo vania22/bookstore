@@ -31,16 +31,16 @@ exports.signup = (req, res, next) => {
             return next(err);
         }
 
-        const { email, name, role, about, history, id } = user;
+        const { email, name, role, _id } = user;
         // return response with JWT Token and user details
         res.json({
             token: tokenForUser(user),
-            email,
-            name,
-            role,
-            about,
-            history,
-            id,
+            user: {
+                email,
+                name,
+                role,
+                _id,
+            },
         });
     });
 };

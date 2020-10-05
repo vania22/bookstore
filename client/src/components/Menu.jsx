@@ -6,6 +6,10 @@ const Menu = () => {
 
   const [activeLink, setActiveLink] = useState(pathname);
 
+  const signOut = () => {
+    window.localStorage.removeItem("jwt");
+  };
+
   useEffect(() => {
     setActiveLink(pathname);
   }, [pathname]);
@@ -19,13 +23,24 @@ const Menu = () => {
           </Link>
         </li>
         <li className="nav-item">
-          <Link className={`nav-link ${activeLink === "/signin" ? "text-warning" : "text-white"}`} to="/signin">
+          <Link
+            className={`nav-link ${activeLink === "/signin" ? "text-warning" : "text-white"}`}
+            to="/signin"
+          >
             Sign In
           </Link>
         </li>
         <li className="nav-item">
-          <Link className={`nav-link ${activeLink === "/signup" ? "text-warning" : "text-white"}`} to="/signup">
+          <Link
+            className={`nav-link ${activeLink === "/signup" ? "text-warning" : "text-white"}`}
+            to="/signup"
+          >
             Sign Up
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link text-white" to="/" onClick={signOut}>
+            Sign Out
           </Link>
         </li>
       </ul>
