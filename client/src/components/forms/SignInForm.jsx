@@ -9,7 +9,6 @@ import ErrorLabel from "./ErrorLabel";
 const SignInForm = () => {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isRedirect, setIsRedirect] = useState(false);
   const { user } = isAuthenticated();
 
   const initialValues = {
@@ -33,7 +32,6 @@ const SignInForm = () => {
         onSubmitProps.resetForm({});
         setError(false);
         setIsLoading(false);
-        setIsRedirect(true);
       },
       () => {
         onSubmitProps.setSubmitting(false);

@@ -43,7 +43,7 @@ exports.create = (req, res) => {
         product.save((err, product) => {
             if (err) {
                 return res.status(400).json({
-                    error: 'please try again later',
+                    error: err.message,
                 });
             }
 
@@ -260,7 +260,7 @@ exports.productById = (req, res, next, id) => {
     Product.findById(id).exec((err, product) => {
         if (err || !product) {
             return res.status(404).json({
-                error: 'Product not found',
+                error: err.message,
             });
         }
         req.product = product;

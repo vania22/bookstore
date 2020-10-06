@@ -9,6 +9,7 @@ import ProtectedRoute from "./hoc/ProtectedRoute";
 import AdminRoute from "./hoc/AdminRoute";
 import AdminDashboard from "./pages/adminPages/AdminDashboard";
 import AddCategory from "./pages/adminPages/AddCategory";
+import AddProduct from "./pages/adminPages/AddProduct";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <ProtectedRoute exact path="/user/dashboard" component={UserDashboard} />
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
         <AdminRoute exact path="/create/category" component={AddCategory} />
+        <AdminRoute exact path="/create/product" component={AddProduct} />
         <Route exact path="/signin" component={Signin} />
         <Route exact path="/signup" component={Signup} />
       </Switch>

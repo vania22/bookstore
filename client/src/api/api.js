@@ -60,4 +60,36 @@ export const createCategory = async (values, onSuccessCallBack, onErrorCallback)
   }
 };
 
+export const createProduct = async (values, onSuccessCallBack, onErrorCallback) => {
+  const { token, user } = isAuthenticated();
+  const formData = new FormData();
+  for (let key in values) {
+    formData.append(key, values[key]);
+  }
+
+  try {
+    let response = await axios.post(`${API.ENDPOINT}/product/create/${user._id}`, formData, {
+      headers: {
+        authorization: token,
+      },
+    });
+
+    console.log(response);
+    onSuccessCallBack(response);
+  } catch (error) {
+    console.log(error);
+    onErrorCallback(error);
+  }
+};
+
+export const getCategories = async () => {
+  try {
+    const { data } = await axios.get(`${API.ENDPOINT}/categories`);
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
 // Returns user object with user name, email, id,
