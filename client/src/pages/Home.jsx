@@ -22,17 +22,17 @@ const Home = () => {
   }, []);
 
   return (
-    <Layout title="Home Page" description="Best IT books here!" className="container-fluid">
+    <Layout title="Home Page" description="Best IT books here!" className="container-fluid row">
       <h2 className="mb-4">New Arrivals</h2>
       <div className="row">
         {productsByArrival.map((product) => (
-          <CardItem key={product._id} prooduct={product} />
+          <CardItem key={product._id} product={product} />
         ))}
       </div>
       <h2 className="mb-4">Best Sellers</h2>
       <div className="row">
         {productsBySell.map((product) => (
-          <CardItem key={product._id} prooduct={product} />
+          <CardItem key={product._id} product={product} />
         ))}
       </div>
     </Layout>

@@ -6,6 +6,7 @@ const Layout = ({
   description = "This is the best bookstore you have ever visited so far!",
   className,
   children,
+  style,
 }) => {
   return (
     <div>
@@ -14,7 +15,9 @@ const Layout = ({
         <h2>{title}</h2>
         <p className="lead">{description}</p>
       </div>
-      <div className={className}>{children}</div>
+      <div className={className} style={style}>
+        {children}
+      </div>
     </div>
   );
 };

@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { API } from "../constants/constants";
 
-const CardItem = ({ prooduct }) => {
+import { getProductPhoto } from "../api/products";
+
+const CardItem = ({ product }) => {
   return (
-    <div className="col-4 mb-3">
-      <div className="card">
-        <div className="card-header">{prooduct.name}</div>
+    <div className="col-4 mb-3r">
+      <div className="card mb-3 ml-auto mr-auto" style={{ width: "281px" }}>
+        <div className="card-header">{product.name}</div>
+        <img
+          src={`${API.ENDPOINT}/product/photo/${product._id}`}
+          className="card-img-top rounded mb-3"
+          style={{ height: "365px", width: "280px", margin: "20px auto" }}
+        />
         <div className="product-body">
-          <p>{prooduct.description}</p>
-          <p>$ {prooduct.price}</p>
+          <p>{product.description}</p>
+          <p>$ {product.price}</p>
           <Link to="#">
             <button className="btn btn-outline-primary mt-2 mb-2 mr-2">View</button>
           </Link>
