@@ -90,4 +90,16 @@ export const getCategories = async () => {
   }
 };
 
+export const getProducts = async (sortBy) => {
+  try {
+    const { data } = await axios.get(
+      `${API.ENDPOINT}/products?sortBy=${sortBy}&order=desc&limit=6`
+    );
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
 // Returns user object with user name, email, id,
