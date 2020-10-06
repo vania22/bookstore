@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { isAuthenticated } from "../api/api";
+import { isAuthenticated } from "../api/auth";
 
 const AdminRoute = ({ component: Component, ...restProps }) => {
   const { user } = isAuthenticated();

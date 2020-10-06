@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-import { signUp } from "../../api/api";
+import { signUp } from "../../api/auth";
 import ErrorLabel from "./ErrorLabel";
 import { Link } from "react-router-dom";
 

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-import { getCategories, createProduct } from "../../api/api";
+import { getCategories } from "../../api/categories";
+import { createProduct } from "../../api/products";
 import ErrorLabel from "./ErrorLabel";
 
 const CreateProductForm = () => {

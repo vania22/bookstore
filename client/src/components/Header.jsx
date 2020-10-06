@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import { isAuthenticated } from "../api/api";
+import { isAuthenticated } from "../api/auth";
 
 const Header = () => {
   const { pathname } = useLocation();

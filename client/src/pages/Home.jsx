@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { getProducts } from "../api/api";
+import { getProducts } from "../api/products";
 import Layout from "./Layout";
 import CardItem from "../components/CardItem";
 

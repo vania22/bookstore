@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import Layout from "./Layout";
-import { isAuthenticated } from "../api/api";
+import { isAuthenticated } from "../api/auth";
 
 const UserDashboard = () => {
   const {
