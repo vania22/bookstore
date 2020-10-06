@@ -74,10 +74,8 @@ export const createProduct = async (values, onSuccessCallBack, onErrorCallback) 
       },
     });
 
-    console.log(response);
     onSuccessCallBack(response);
   } catch (error) {
-    console.log(error);
     onErrorCallback(error);
   }
 };

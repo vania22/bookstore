@@ -10,8 +10,8 @@ const CreateProductForm = () => {
   const [success, setSuccess] = useState(null);
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
 
+  // This useEffect fetches categories to set them to <Select/> input
   useEffect(() => {
     const setCategoriesList = async () => {
       setCategories(await getCategories());
@@ -41,6 +41,7 @@ const CreateProductForm = () => {
     category: Yup.string().required("Category is a mandatory field"),
   });
 
+  // This method used for photo validation
   const validatePhoto = (value) => {
     let error;
 
@@ -51,24 +52,26 @@ const CreateProductForm = () => {
     if (value.size > 3000000) {
       error = "Image size must be less than 3mb";
     }
-
-    if (
-      !(value.type !== "image/jpeg" && value.type === "image/png") &&
-      !(value.type !== "image/png" && value.type === "image/jpeg")
-    ) {
-      error = "Invalid image format, please use jpg, jpeg or png";
-    }
-
     return error;
   };
 
+  /**
+   * Submit new product
+   * If success:
+   *    set Success to true - to show pop-up about success
+   *    set Name to product name - to show newly created product name in the succes pop-up
+   *    setTimeout => setSuccess(null) to make success pop-up to dissapear
+   * If failure:
+   *    set Error to true - to show pop-up that error has occured
+   *    setTimeout => setError(false) to make error pop-up to dissapear
+   *
+   * setSubmitting(false) - to make Submit button to be not disabled
+   */
   const onSubmit = (values, onSubmitProps) => {
-    setIsLoading(true);
     createProduct(
       values,
       () => {
         onSubmitProps.resetForm({});
-        setError(false);
         setName(values.name);
         setSuccess(true);
         setTimeout(() => setSuccess(null), 5000);
@@ -79,7 +82,6 @@ const CreateProductForm = () => {
       }
     );
     onSubmitProps.setSubmitting(false);
-    setIsLoading(false);
   };
 
   return (
@@ -113,6 +115,7 @@ const CreateProductForm = () => {
               />
               <ErrorMessage name="name" component={ErrorLabel} />
             </div>
+
             <div className="form-group">
               <label className="text-muted" htmlFor="description">
                 Description
@@ -127,6 +130,7 @@ const CreateProductForm = () => {
               />
               <ErrorMessage name="description" component={ErrorLabel} />
             </div>
+
             <div className="form-group">
               <label className="text-muted" htmlFor="price">
                 Price
@@ -140,6 +144,7 @@ const CreateProductForm = () => {
               />
               <ErrorMessage name="price" component={ErrorLabel} />
             </div>
+
             <div className="form-group">
               <label className="text-muted" htmlFor="quantity">
                 Quantity
@@ -154,6 +159,7 @@ const CreateProductForm = () => {
               <ErrorMessage name="quantity" component={ErrorLabel} />
             </div>
 
+            {/* Below is <Select> input which renders <option> with values (category id) fetched in useEffect */}
             <div className="form-group">
               <label className="text-muted" htmlFor="category">
                 Category
@@ -168,6 +174,7 @@ const CreateProductForm = () => {
               <ErrorMessage name="category" component={ErrorLabel} />
             </div>
 
+            {/* Below are radiobuttons input */}
             <div className="form-group form-check-inline">
               <label className="form-check-label text-muted">Shipping</label>
               <Field name="shipping">
@@ -203,6 +210,7 @@ const CreateProductForm = () => {
               <ErrorMessage name="quantity" component={ErrorLabel} />
             </div>
 
+            {/* Below is <input type='file'/> for photo which is using formik setFieldValue with native event.target object - because Formik doesn't support <input type='file'/> */}
             <div className="custom-file mb-4">
               <label className="custom-file-label" htmlFor="photo">
                 {formik.values.photo.name}
@@ -214,6 +222,7 @@ const CreateProductForm = () => {
                       id="photo"
                       name="photo"
                       type="file"
+                      accept="image/*"
                       className="custom-file-input"
                       onChange={(e) => {
                         form.setFieldValue("photo", e.target.files[0]);
@@ -228,24 +237,13 @@ const CreateProductForm = () => {
             </div>
 
             <div>
-              {isLoading ? (
-                <button className="btn btn-primary" type="button" disabled>
-                  <span
-                    className="spinner-grow spinner-grow-sm"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  Creating...
-                </button>
-              ) : (
-                <button
-                  className="btn btn-primary"
-                  type="submit"
-                  disabled={formik.isSubmitting || !formik.isValid}
-                >
-                  Create
-                </button>
-              )}
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={formik.isSubmitting || !formik.isValid}
+              >
+                Create
+              </button>
             </div>
           </Form>
         )}

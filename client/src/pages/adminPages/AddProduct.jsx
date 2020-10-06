@@ -7,8 +7,8 @@ import Layout from "../Layout";
 const AddProduct = () => {
   return (
     <Layout
-      title="Add Category"
-      description="Create new categories on this page"
+      title="Add Product"
+      description="Create new products on this page"
       className="container col-md-4 offset-md-4"
     >
       <CreateProductForm />
