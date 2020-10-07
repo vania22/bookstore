@@ -33,3 +33,21 @@ export const getProducts = async (sortBy) => {
     return null;
   }
 };
+
+export const getFilteredProducts = async (skip, limit, filters = {}) => {
+  const body = {
+    limit,
+    skip,
+    filters: {
+      category: filters.categories,
+      price: filters.priceRange,
+    },
+  };
+
+  try {
+    const { data } = await axios.post(`${API.ENDPOINT}/products/by/search`, body);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
