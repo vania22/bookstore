@@ -23,6 +23,14 @@ const Header = () => {
             Home
           </Link>
         </li>
+        <li className="nav-item">
+          <Link
+            className={`nav-link ${activeLink === "/shop" ? "text-warning" : "text-white"}`}
+            to="/shop"
+          >
+            Shop
+          </Link>
+        </li>
         {!user ? (
           <>
             <li className="nav-item">
