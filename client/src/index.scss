@@ -1,3 +1,12 @@
+.jumbotron {
+  background: #00c6ff; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #0072ff, #00c6ff); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #0072ff, #00c6ff);
+
+  color: white;
+  border-radius: 0;
+}
+
 .home-content {
   padding: 0;
   margin: 0 auto;
