@@ -11,8 +11,8 @@ const AdminDashboard = () => {
 
   return (
     <Layout title="Dashboard" description={`Hi there, ${name}!`} className="container">
-      <div className="row">
-        <div className="col-3">
+      <div className="md-row sm-col">
+        <div className="sm-col-12 md-col-3 mb-5">
           <div className="card">
             <h3 className="card-header">Admin Links</h3>
             <ul className="list-group">

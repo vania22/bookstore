@@ -22,15 +22,19 @@ const Home = () => {
   }, []);
 
   return (
-    <Layout title="Home Page" description="Best IT books here!" className="container-fluid row">
+    <Layout
+      title="Home Page"
+      description="Best IT books here!"
+      className="home-content container-fluid row"
+    >
       <h2 className="mb-4">New Arrivals</h2>
-      <div className="row">
+      <div className="row product-container">
         {productsByArrival.map((product) => (
           <CardItem key={product._id} product={product} />
         ))}
       </div>
       <h2 className="mb-4">Best Sellers</h2>
-      <div className="row">
+      <div className="row product-container">
         {productsBySell.map((product) => (
           <CardItem key={product._id} product={product} />
         ))}
