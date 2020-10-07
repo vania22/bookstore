@@ -33,15 +33,3 @@ export const getProducts = async (sortBy) => {
     return null;
   }
 };
-
-export const getProductPhoto = async (productId) => {
-  try {
-    const { data } = await axios.get(`${API.ENDPOINT}/product/photo/${productId}`);
-    //const image = await data.blob();
-    //const imageUrl = URL.createObjectURL("image");
-    console.log(data);
-    return data;
-  } catch (error) {
-    return null;
-  }
-};
