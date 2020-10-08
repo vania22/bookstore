@@ -205,7 +205,7 @@ exports.listRelated = (req, res) => {
 exports.listBySearch = (req, res) => {
     let order = req.query.order ? req.query.order : 'desc';
     let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
-    let limit = req.query.limit ? parseInt(req.query.limit) : 100;
+    let limit = req.body.limit ? parseInt(req.body.limit) : 6;
     let skip = parseInt(req.body.skip);
     let findArgs = {};
 

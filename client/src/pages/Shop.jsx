@@ -12,6 +12,7 @@ const Shop = () => {
   const [products, setProducts] = useState([]);
   const [limit, setLimit] = useState(6);
   const [skip, setSkip] = useState(0);
+  const [size, setSize] = useState(0);
   const [filters, setFilters] = useState({ categories: [], priceRange: [0, 30] });
 
   useEffect(() => {
@@ -29,12 +30,23 @@ const Shop = () => {
   }, []);
 
   const loadFilteredProducts = async () => {
-    const { data } = await getFilteredProducts(skip, limit, filters);
+    const { data, size } = await getFilteredProducts(skip, limit, filters);
     setProducts(data);
+    setSize(size);
+    setSkip(0);
   };
 
   const handleFilters = (filter, filterBy) => {
     setFilters({ ...filters, [filterBy]: filter });
+  };
+
+  const loadMore = async () => {
+    let toSkip = skip + limit;
+
+    const { data, size } = await getFilteredProducts(toSkip, limit, filters);
+    setProducts([...products, ...data]);
+    setSize(size);
+    setSkip(toSkip);
   };
 
   return (
@@ -63,6 +75,9 @@ const Shop = () => {
               </div>
             ))}
           </div>
+          <button className="btn btn-primary loadmore-button" onClick={() => loadMore()}>
+            Load More...
+          </button>
         </div>
       </div>
     </Layout>
