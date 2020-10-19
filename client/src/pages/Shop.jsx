@@ -12,17 +12,17 @@ const Shop = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [skip, setSkip] = useState(0);
-  const [filters, setFilters] = useState({ categories: [], priceRange: [0, 30] });
+  const [filters, setFilters] = useState({ categories: [], priceRange: [0, 150] });
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
   const limit = 6;
 
   useEffect(() => {
     const loadInitalProducts = async () => {
       setProducts(await getProducts("sold"));
+      setLoading(false);
     };
-
     loadInitalProducts();
-
     const categoriesList = async () => {
       setCategories(await getCategories());
     };
@@ -31,8 +31,11 @@ const Shop = () => {
   }, []);
 
   const loadFilteredProducts = async () => {
+    setLoading(true);
     const { data } = await getFilteredProducts(0, limit, filters, searchTerm);
     setProducts(data);
+    setLoading(false);
+    setSearchTerm("");
     setSkip(0);
   };
 
@@ -66,19 +69,27 @@ const Shop = () => {
             Filter
           </button>
         </div>
-        <div className="shop-products-container">
-          <h2 className="mb-4">Products</h2>
-          <div className="row">
-            {products.map((product) => (
-              <div className="product-container row" key={product._id}>
-                <CardItem product={product} />
-              </div>
-            ))}
+        {loading ? null : (
+          <div className="shop-products-container">
+            {products.length > 0 ? (
+              <>
+                <h2 className="mb-4">Products</h2>
+                <div className="row">
+                  {products.map((product) => (
+                    <div className="product-container row" key={product._id}>
+                      <CardItem product={product} />
+                    </div>
+                  ))}
+                </div>
+                <button className="btn btn-primary loadmore-button" onClick={() => loadMore()}>
+                  Load More...
+                </button>
+              </>
+            ) : (
+              <h1 className="no-products-label">No Products found</h1>
+            )}
           </div>
-          <button className="btn btn-primary loadmore-button" onClick={() => loadMore()}>
-            Load More...
-          </button>
-        </div>
+        )}
       </div>
     </Layout>
   );

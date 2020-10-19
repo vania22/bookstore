@@ -14,6 +14,7 @@ const Search = ({ searchTerm, setSearchTerm }) => {
       <input
         type="text"
         id="search"
+        placeholder="Type name and click Filter"
         className="form-control"
         value={searchTerm}
         onChange={(e) => handleChange(e)}

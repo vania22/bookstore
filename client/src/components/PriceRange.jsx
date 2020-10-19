@@ -4,7 +4,7 @@ import Slider, { Range } from "rc-slider";
 import "rc-slider/assets/index.css";
 
 const PriceRange = ({ handleFilters }) => {
-  const [value, setValue] = useState([0, 30]);
+  const [value, setValue] = useState([0, 150]);
 
   const handleChange = (values) => {
     setValue(values);
