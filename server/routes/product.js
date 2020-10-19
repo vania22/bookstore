@@ -14,6 +14,7 @@ const {
     photo,
     list,
     listRelated,
+    listByFilter,
     listBySearch,
     listCategories,
     remove,
@@ -28,6 +29,7 @@ router.get('/product/photo/:productId', photo);
 router.get('/products', list);
 router.get('/products/related/:productId', listRelated);
 router.get('/products/categories/', listCategories);
+router.post('/products/by/filter', listByFilter);
 router.post('/products/by/search', listBySearch);
 router.put('/product/:productId/:userId', requireAuth, isAdmin, update);
 router.delete('/product/:productId/:userId', requireAuth, isAdmin, remove);

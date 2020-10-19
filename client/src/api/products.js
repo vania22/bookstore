@@ -34,7 +34,7 @@ export const getProducts = async (sortBy) => {
   }
 };
 
-export const getFilteredProducts = async (skip, limit, filters = {}) => {
+export const getFilteredProducts = async (skip, limit, filters = {}, searchTerm) => {
   const body = {
     limit,
     skip,
@@ -42,10 +42,11 @@ export const getFilteredProducts = async (skip, limit, filters = {}) => {
       category: filters.categories,
       price: filters.priceRange,
     },
+    searchTerm,
   };
 
   try {
-    const { data } = await axios.post(`${API.ENDPOINT}/products/by/search`, body);
+    const { data } = await axios.post(`${API.ENDPOINT}/products/by/filter`, body);
     return data;
   } catch (error) {
     return error;

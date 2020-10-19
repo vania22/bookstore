@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import Layout from "./Layout";
+import Search from "../components/Search";
 import { getProducts, getFilteredProducts } from "../api/products";
 import { getCategories } from "../api/categories";
 import CardItem from "../components/CardItem";
@@ -10,10 +11,10 @@ import PriceRange from "../components/PriceRange";
 const Shop = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
-  const [limit, setLimit] = useState(6);
   const [skip, setSkip] = useState(0);
-  const [size, setSize] = useState(0);
   const [filters, setFilters] = useState({ categories: [], priceRange: [0, 30] });
+  const [searchTerm, setSearchTerm] = useState("");
+  const limit = 6;
 
   useEffect(() => {
     const loadInitalProducts = async () => {
@@ -30,9 +31,8 @@ const Shop = () => {
   }, []);
 
   const loadFilteredProducts = async () => {
-    const { data, size } = await getFilteredProducts(skip, limit, filters);
+    const { data } = await getFilteredProducts(0, limit, filters, searchTerm);
     setProducts(data);
-    setSize(size);
     setSkip(0);
   };
 
@@ -43,9 +43,8 @@ const Shop = () => {
   const loadMore = async () => {
     let toSkip = skip + limit;
 
-    const { data, size } = await getFilteredProducts(toSkip, limit, filters);
+    const { data } = await getFilteredProducts(toSkip, limit, filters, searchTerm);
     setProducts([...products, ...data]);
-    setSize(size);
     setSkip(toSkip);
   };
 
@@ -53,6 +52,7 @@ const Shop = () => {
     <Layout title="Shop" description="shop the best IT books here!" className="container-fluid">
       <div className="shop-container">
         <div className="col-4 filters">
+          <Search searchTerm={searchTerm} setSearchTerm={(e) => setSearchTerm(e)} />
           <h4>Filter by categories</h4>
           <ul>
             <CheckBoxes

@@ -202,10 +202,11 @@ exports.listRelated = (req, res) => {
  * As the user manipulates with filters, api request will be made and
  * Return the products to the users based on his manipulations with filters
  */
-exports.listBySearch = (req, res) => {
+exports.listByFilter = (req, res) => {
     let order = req.query.order ? req.query.order : 'desc';
     let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
     let limit = req.body.limit ? parseInt(req.body.limit) : 6;
+    let searchTerm = req.body.searchTerm ? req.body.searchTerm : '';
     let skip = parseInt(req.body.skip);
     let findArgs = {};
 
@@ -224,12 +225,33 @@ exports.listBySearch = (req, res) => {
         }
     }
 
-    Product.find(findArgs)
+    Product.find({ ...findArgs, name: { $regex: searchTerm, $options: 'i' } })
         .select('-photo')
         .populate('category')
         .sort([[sortBy, order]])
         .skip(skip)
         .limit(limit)
+        .exec((err, data) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'Products not found',
+                });
+            }
+            res.json({
+                size: data.length,
+                data,
+            });
+        });
+};
+
+exports.listBySearch = (req, res) => {
+    let skip = parseInt(req.body.skip);
+    let searchTerm = req.body.searchTerm;
+
+    Product.find({ name: {} })
+        .select('-photo')
+        .populate('category')
+        .limit(1)
         .exec((err, data) => {
             if (err) {
                 return res.status(400).json({
