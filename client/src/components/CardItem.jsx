@@ -1,8 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { API } from "../constants/constants";
+import { CartContext } from "../helpers/CartContext";
 
 const CardItem = ({ product }) => {
+  const { dispatch, state } = useContext(CartContext);
+
+  const addToCart = () => {
+    dispatch({ type: "add_item", payload: product });
+  };
+
   return (
     <div className="card-container">
       <div className="card">
@@ -14,7 +21,9 @@ const CardItem = ({ product }) => {
           <Link to={`/product/${product._id}`}>
             <button className="btn btn-outline-primary">View</button>
           </Link>
-          <button className="btn btn-warning text-light">Add to cart</button>
+          <button className="btn btn-warning text-light" onClick={addToCart}>
+            Add to cart
+          </button>
         </div>
       </div>
     </div>

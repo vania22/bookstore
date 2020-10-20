@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 
@@ -6,11 +6,13 @@ import Layout from "./Layout";
 import CardItem from "../components/CardItem";
 import { API } from "../constants/constants";
 import { getProduct, getRelatedProducts } from "../api/products";
+import { CartContext } from "../helpers/CartContext";
 
 const SingleProduct = () => {
   const { id: productId } = useParams();
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProduct] = useState([]);
+  const { state, dispatch } = useContext(CartContext);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -27,6 +29,10 @@ const SingleProduct = () => {
 
     fetchRelatedProducts();
   }, [productId]);
+
+  const addToCart = () => {
+    dispatch({ type: "add_item", payload: product });
+  };
 
   return (
     <Layout
@@ -57,7 +63,9 @@ const SingleProduct = () => {
           </div>
         </div>
         <div className="card-footer">
-          <button className="btn btn-warning text-light">Add to cart</button>
+          <button className="btn btn-warning text-light" onClick={addToCart}>
+            Add to cart
+          </button>
           {product.quantity > 0 ? (
             <p className="text-primary mb-0">In Stock</p>
           ) : (

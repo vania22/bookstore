@@ -1,12 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { isAuthenticated } from "../api/auth";
+import { CartContext } from "../helpers/CartContext";
 
 const Header = () => {
   const { pathname } = useLocation();
   const [activeLink, setActiveLink] = useState(pathname);
   const { user } = isAuthenticated();
+  const { state } = useContext(CartContext);
+
+  const totalItems = state.reduce((acc, curr) => {
+    return acc + curr.count;
+  }, 0);
+
   const signOut = () => {
     window.localStorage.removeItem("jwt");
   };
@@ -29,6 +36,17 @@ const Header = () => {
             to="/shop"
           >
             Shop
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link
+            className={`nav-link ${activeLink === "/cart" ? "text-warning" : "text-white"}`}
+            to="/cart"
+          >
+            Cart
+            <sup>
+              <small className="cart-badge">{totalItems}</small>
+            </sup>
           </Link>
         </li>
         {!user ? (
