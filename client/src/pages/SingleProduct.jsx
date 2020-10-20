@@ -68,9 +68,15 @@ const SingleProduct = () => {
       <div className="home-content container-fluid" style={{ flexDirection: "column" }}>
         <h2 className="mb-4">Related Products</h2>
         <div className="row product-container">
-          {relatedProducts.map((product) => (
-            <CardItem key={product._id} product={product} />
-          ))}
+          {relatedProducts.length > 1 ? (
+            relatedProducts.map((relatedProduct) =>
+              product.name !== relatedProduct.name ? (
+                <CardItem key={relatedProduct._id} product={relatedProduct} />
+              ) : null
+            )
+          ) : (
+            <h6 className="mb-4">No related products found</h6>
+          )}
         </div>
       </div>
     </Layout>
