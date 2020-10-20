@@ -11,7 +11,7 @@ const CardItem = ({ product }) => {
         <div className="product-body">
           <p className="description">{product.description}</p>
           <p>$ {product.price}</p>
-          <Link to="#">
+          <Link to={`/product/${product._id}`}>
             <button className="btn btn-outline-primary">View</button>
           </Link>
           <button className="btn btn-warning text-light">Add to cart</button>

@@ -5,6 +5,7 @@ import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
+import SingleProduct from "./pages/SingleProduct";
 import UserDashboard from "./pages/UserDashboard";
 import ProtectedRoute from "./hoc/ProtectedRoute";
 import AdminRoute from "./hoc/AdminRoute";
@@ -18,6 +19,7 @@ const App = () => {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/shop" component={Shop} />
+        <Route exact path="/product/:id" component={SingleProduct} />
         <ProtectedRoute exact path="/user/dashboard" component={UserDashboard} />
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
         <AdminRoute exact path="/create/category" component={AddCategory} />

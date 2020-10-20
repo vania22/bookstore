@@ -34,6 +34,26 @@ export const getProducts = async (sortBy) => {
   }
 };
 
+export const getProduct = async (productId) => {
+  try {
+    const { data } = await axios.get(`${API.ENDPOINT}/product/${productId}`);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getRelatedProducts = async (productId) => {
+  try {
+    const { data } = await axios.get(`${API.ENDPOINT}/products/related/${productId}`);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getFilteredProducts = async (skip, limit, filters = {}, searchTerm) => {
   const body = {
     limit,
