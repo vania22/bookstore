@@ -6,13 +6,13 @@ import { CartContext } from "../helpers/CartContext";
 import { getBraintreeClientToken } from "../api/braintree";
 
 const Cart = () => {
-  const [braintreeData, setBraintreeData] = useState({ instance: {}, clientToken: null });
+  const [braintreeData, setBraintreeData] = useState({
+    instance: {},
+    clientToken: null,
+    error: null,
+  });
 
   const { state } = useContext(CartContext);
-
-  const totalItems = state.reduce((acc, curr) => {
-    return acc + parseInt(curr.count);
-  }, 0);
 
   const totalPrice = state.reduce((acc, curr) => {
     return acc + parseInt(curr.count) * curr.price;
@@ -28,6 +28,19 @@ const Cart = () => {
     braintreeToken();
   }, []);
 
+  const buy = () => {
+    let nonce;
+    let getNonce = braintreeData.instance
+      .requestPaymentMethod()
+      .then((data) => {
+        console.log(data);
+        nonce = data.nonce;
+
+        console.log(nonce, totalPrice);
+      })
+      .catch((err) => setBraintreeData({ ...braintreeData, error: err.message }));
+  };
+
   return (
     <Layout
       title="Checkout"
@@ -35,18 +48,22 @@ const Cart = () => {
       className="container-fluid"
     >
       <div className="checkout-container">
-        <div className="mt-5 mb-5 col braintree-container">
+        <div
+          className="mt-5 mb-5 col braintree-container"
+          onBlur={() => setBraintreeData({ ...braintreeData, error: null })}
+        >
+          {braintreeData.error && <div className="alert alert-danger">{braintreeData.error}</div>}
           {braintreeData.clientToken && (
-            <>
-              <DropIn
-                options={{ authorization: braintreeData.clientToken }}
-                onInstance={(instance) => (braintreeData.instance = instance)}
-              />
-            </>
+            <DropIn
+              options={{ authorization: braintreeData.clientToken }}
+              onInstance={(instance) => (braintreeData.instance = instance)}
+            />
           )}
           <div className="row checkout-price-button-container">
             <h2>Total: ${totalPrice}</h2>
-            <button className="btn btn-success ml-5">Checkout</button>
+            <button className="btn btn-success ml-5" onClick={buy}>
+              Buy!
+            </button>
           </div>
         </div>
       </div>
