@@ -7,7 +7,7 @@ import { CartContext } from "../helpers/CartContext";
 const Cart = () => {
   const { state, dispatch } = useContext(CartContext);
   const totalItems = state.reduce((acc, curr) => {
-    return acc + curr.count;
+    return acc + parseInt(curr.count);
   }, 0);
 
   return (
@@ -23,7 +23,7 @@ const Cart = () => {
           <div className="cart-items">
             {state.map((item) => (
               <div className="product-container cart-item" key={item._id}>
-                <CardItem product={item} cart />
+                <CardItem product={item} cart state={state} dispatch={dispatch} />
               </div>
             ))}
           </div>

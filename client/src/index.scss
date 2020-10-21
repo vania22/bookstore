@@ -188,5 +188,30 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+
+    .item-count-input {
+      width: 40px;
+      margin: 0 5px;
+    }
+
+    .remove-button {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 22px;
+      width: 25px;
+      text-align: center;
+      line-height: 18px;
+      height: 25px;
+      border-radius: 50%;
+      border: 1px solid black;
+      border-color: #000;
+      opacity: 0.7;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
   }
 }

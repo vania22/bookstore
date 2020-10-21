@@ -11,7 +11,7 @@ const Header = () => {
   const { state } = useContext(CartContext);
 
   const totalItems = state.reduce((acc, curr) => {
-    return acc + curr.count;
+    return acc + parseInt(curr.count);
   }, 0);
 
   const signOut = () => {
