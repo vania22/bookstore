@@ -32,10 +32,12 @@ const Cart = () => {
             ))}
           </div>
         </div>
-        <div className="row mt-5 mb-5">
-          <h2>Total: ${totalPrice}</h2>
-          <button className="btn btn-success ml-5">Checkout</button>
-        </div>
+        {!!totalPrice && (
+          <div className="mt-5 mb-5 row">
+            <h2>Total: ${totalPrice}</h2>
+            <button className="btn btn-success ml-5">Checkout</button>
+          </div>
+        )}
       </div>
     </Layout>
   );
