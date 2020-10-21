@@ -214,4 +214,25 @@
       }
     }
   }
+  .btn-success a {
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+.checkout-container {
+  display: flex;
+  justify-content: center;
+
+  .braintree-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 60% !important;
+
+    .checkout-price-button-container {
+      margin-top: 20px;
+    }
+  }
 }

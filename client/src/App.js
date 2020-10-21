@@ -6,6 +6,7 @@ import Signin from "./pages/Signin";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 import SingleProduct from "./pages/SingleProduct";
 import UserDashboard from "./pages/UserDashboard";
 import ProtectedRoute from "./hoc/ProtectedRoute";
@@ -25,6 +26,7 @@ const App = () => {
           <Route exact path="/shop" component={Shop} />
           <Route exact path="/product/:id" component={SingleProduct} />
           <Route exact path="/cart" component={Cart} />
+          <ProtectedRoute exact path="/checkout" component={Checkout} />
           <ProtectedRoute exact path="/user/dashboard" component={UserDashboard} />
           <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
           <AdminRoute exact path="/create/category" component={AddCategory} />
