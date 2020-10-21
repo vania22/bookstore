@@ -10,6 +10,10 @@ const Cart = () => {
     return acc + parseInt(curr.count);
   }, 0);
 
+  const totalPrice = state.reduce((acc, curr) => {
+    return acc + parseInt(curr.count) * curr.price;
+  }, 0);
+
   return (
     <Layout
       title="Shopping Cart"
@@ -27,6 +31,10 @@ const Cart = () => {
               </div>
             ))}
           </div>
+        </div>
+        <div className="row mt-5 mb-5">
+          <h2>Total: ${totalPrice}</h2>
+          <button className="btn btn-success ml-5">Checkout</button>
         </div>
       </div>
     </Layout>
