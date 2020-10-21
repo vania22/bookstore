@@ -6,9 +6,10 @@ const passport = require('passport');
 // Middleware to check if user is authenticated (for protected routes)
 const requireAuth = passport.authenticate('jwt', { session: false });
 const { userById } = require('../controllers/user');
-const { generateToken } = require('../controllers/braintree');
+const { generateToken, processPayment } = require('../controllers/braintree');
 
 router.get('/braintree/getToken/:userId', requireAuth, generateToken);
+router.post('/braintree/payment/:userId', requireAuth, processPayment);
 
 router.param('userId', userById);
 

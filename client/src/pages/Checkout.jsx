@@ -3,13 +3,14 @@ import DropIn from "braintree-web-drop-in-react";
 
 import Layout from "./Layout";
 import { CartContext } from "../helpers/CartContext";
-import { getBraintreeClientToken } from "../api/braintree";
+import { getBraintreeClientToken, processPayment } from "../api/braintree";
 
 const Cart = () => {
   const [braintreeData, setBraintreeData] = useState({
     instance: {},
     clientToken: null,
     error: null,
+    success: null,
   });
 
   const { state } = useContext(CartContext);
@@ -37,6 +38,18 @@ const Cart = () => {
         nonce = data.nonce;
 
         console.log(nonce, totalPrice);
+
+        const paymentData = {
+          paymentMethodNonce: nonce,
+          price: totalPrice,
+        };
+
+        processPayment(paymentData)
+          .then(({ data }) => {
+            console.log(data);
+            setBraintreeData({ ...braintreeData, success: data.success });
+          })
+          .catch((err) => console.log(err));
       })
       .catch((err) => setBraintreeData({ ...braintreeData, error: err.message }));
   };
@@ -50,9 +63,12 @@ const Cart = () => {
       <div className="checkout-container">
         <div
           className="mt-5 mb-5 col braintree-container"
-          onBlur={() => setBraintreeData({ ...braintreeData, error: null })}
+          onBlur={() => setBraintreeData({ ...braintreeData, error: null, success: null })}
         >
           {braintreeData.error && <div className="alert alert-danger">{braintreeData.error}</div>}
+          {braintreeData.success && (
+            <div className="alert alert-success">Thank you for your purchase!</div>
+          )}
           {braintreeData.clientToken && (
             <DropIn
               options={{ authorization: braintreeData.clientToken }}
