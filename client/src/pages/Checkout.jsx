@@ -13,7 +13,7 @@ const Cart = () => {
     success: null,
   });
 
-  const { state } = useContext(CartContext);
+  const { state, dispatch } = useContext(CartContext);
 
   const totalPrice = state.reduce((acc, curr) => {
     return acc + parseInt(curr.count) * curr.price;
@@ -48,6 +48,7 @@ const Cart = () => {
           .then(({ data }) => {
             console.log(data);
             setBraintreeData({ ...braintreeData, success: data.success });
+            dispatch({ type: "empty_cart" });
           })
           .catch((err) => console.log(err));
       })

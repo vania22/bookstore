@@ -37,3 +37,9 @@ export const changeCount = (item, state) => {
 
   return filteredCart;
 };
+
+export const emptyCart = () => {
+  localStorage.removeItem("cart");
+
+  return [];
+};

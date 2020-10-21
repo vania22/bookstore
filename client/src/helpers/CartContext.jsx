@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { addItemToCart, removeItemFromCart, changeCount } from "./reducerHelpers";
+import { addItemToCart, removeItemFromCart, changeCount, emptyCart } from "./reducerHelpers";
 
 export const CartContext = React.createContext([]);
 
@@ -16,6 +16,8 @@ const CartReducerContext = ({ children }) => {
         return removeItemFromCart(action.payload, state);
       case "change_count":
         return changeCount(action.payload, state);
+      case "empty_cart":
+        return emptyCart();
       default:
         throw new Error();
     }
