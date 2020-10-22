@@ -9,9 +9,9 @@ const requireAuth = passport.authenticate('jwt', { session: false });
 const { userById } = require('../controllers/user');
 const { isAdmin } = require('../controllers/auth');
 
-const { create } = require('../controllers/orders');
+const { create, addUserOrderHistory } = require('../controllers/orders');
 
-router.post('/order/create/:userId', requireAuth, create);
+router.post('/order/create/:userId', requireAuth, addUserOrderHistory, create);
 
 router.param('userId', userById);
 
