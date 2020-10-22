@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Redirect } from "react-router-dom";
 import DropIn from "braintree-web-drop-in-react";
 
 import Layout from "./Layout";
 import { CartContext } from "../helpers/CartContext";
 import { getBraintreeClientToken, processPayment } from "../api/braintree";
+import { createOrder } from "../api/orders";
 
 const Cart = () => {
   const [braintreeData, setBraintreeData] = useState({
@@ -13,6 +15,8 @@ const Cart = () => {
     success: null,
   });
 
+  const [address, setAddress] = useState("");
+
   const { state, dispatch } = useContext(CartContext);
 
   const totalPrice = state.reduce((acc, curr) => {
@@ -20,13 +24,18 @@ const Cart = () => {
   }, 0);
 
   useEffect(() => {
+    let control = true;
+
     const braintreeToken = async () => {
       const { data } = await getBraintreeClientToken();
-      setBraintreeData({ ...braintreeData, clientToken: data.clientToken });
-      return data;
+      if (control) {
+        setBraintreeData({ ...braintreeData, clientToken: data.clientToken });
+      }
     };
 
     braintreeToken();
+
+    return () => (control = false);
   }, []);
 
   const buy = () => {
@@ -34,10 +43,7 @@ const Cart = () => {
     let getNonce = braintreeData.instance
       .requestPaymentMethod()
       .then((data) => {
-        console.log(data);
         nonce = data.nonce;
-
-        console.log(nonce, totalPrice);
 
         const paymentData = {
           paymentMethodNonce: nonce,
@@ -46,9 +52,19 @@ const Cart = () => {
 
         processPayment(paymentData)
           .then(({ data }) => {
-            console.log(data);
             setBraintreeData({ ...braintreeData, success: data.success });
+
+            const orderInfo = {
+              products: state,
+              transactionId: data.transaction.id,
+              amount: data.transaction.amount,
+              address,
+            };
+
+            createOrder(orderInfo);
+
             dispatch({ type: "empty_cart" });
+            setAddress("");
           })
           .catch((err) => console.log(err));
       })
@@ -61,6 +77,7 @@ const Cart = () => {
       description="Come back if you need more from us!"
       className="container-fluid"
     >
+      {state.length < 1 && !braintreeData.success && <Redirect to="/" />}
       <div className="checkout-container">
         <div
           className="mt-5 mb-5 col braintree-container"
@@ -70,9 +87,17 @@ const Cart = () => {
           {braintreeData.success && (
             <div className="alert alert-success">Thank you for your purchase!</div>
           )}
+          <textarea
+            className="form-control"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            placeholder="Please provide your shipping address here"
+          />
           {braintreeData.clientToken && (
             <DropIn
-              options={{ authorization: braintreeData.clientToken }}
+              options={{
+                authorization: braintreeData.clientToken,
+              }}
               onInstance={(instance) => (braintreeData.instance = instance)}
             />
           )}
