@@ -2,6 +2,7 @@ const formidable = require('formidable');
 const _ = require('lodash');
 const fs = require('fs');
 const Product = require('../models/product');
+const { forEach } = require('lodash');
 
 exports.create = (req, res) => {
     // Intercept form from request
@@ -287,5 +288,29 @@ exports.productById = (req, res, next, id) => {
         }
         req.product = product;
         next();
+    });
+};
+
+exports.updateProductQuantity = (req, res, next) => {
+    const products = req.body.order.products;
+    console.log(products);
+
+    products.forEach((product) => {
+        const quantity = product.quantity - product.count;
+
+        Product.findByIdAndUpdate(
+            { _id: product._id },
+            { quantity },
+            { new: true },
+            (err, result) => {
+                if (err) {
+                    return res.status(400).json(error);
+                }
+
+                console.log('success', result);
+
+                next();
+            },
+        );
     });
 };
