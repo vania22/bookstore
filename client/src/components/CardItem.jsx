@@ -20,8 +20,8 @@ const CardItem = ({ product, cart }) => {
     if (cart) {
       if (itemCountValidated < 1 || itemCountValidated === NaN) {
         itemCountValidated = 1;
-      } else if (itemCountValidated > 10) {
-        itemCountValidated = 10;
+      } else if (itemCountValidated > product.quantity) {
+        itemCountValidated = product.quantity;
       }
 
       dispatch({ type: "change_count", payload: { product, itemCount: itemCountValidated } });
@@ -57,6 +57,7 @@ const CardItem = ({ product, cart }) => {
         <div className="product-body">
           <p className="description">{product.description}</p>
           <p>$ {product.price}</p>
+          {product.quantity === 0 && <p className=".text-danger">Out of stock</p>}
           {cart && (
             <p>
               You selected
@@ -64,7 +65,7 @@ const CardItem = ({ product, cart }) => {
                 type="number"
                 className="item-count-input"
                 min="1"
-                max="10"
+                max={product.quantity}
                 value={itemCount}
                 onChange={(e) => onCountChange(e)}
               />
