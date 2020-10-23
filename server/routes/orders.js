@@ -11,13 +11,17 @@ const { isAdmin } = require('../controllers/auth');
 
 const { create } = require('../controllers/orders');
 const { addUserOrderHistory } = require('../controllers/user');
-const { updateProductQuantity } = require('../controllers/product');
+const {
+    updateProductQuantity,
+    updateProductSoldCount,
+} = require('../controllers/product');
 
 router.post(
     '/order/create/:userId',
     requireAuth,
     addUserOrderHistory,
     updateProductQuantity,
+    updateProductSoldCount,
     create,
 );
 

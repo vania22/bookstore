@@ -293,7 +293,6 @@ exports.productById = (req, res, next, id) => {
 
 exports.updateProductQuantity = (req, res, next) => {
     const products = req.body.order.products;
-    console.log(products);
 
     products.forEach((product) => {
         const quantity = product.quantity - product.count;
@@ -307,7 +306,26 @@ exports.updateProductQuantity = (req, res, next) => {
                     return res.status(400).json(error);
                 }
 
-                console.log('success', result);
+                next();
+            },
+        );
+    });
+};
+
+exports.updateProductSoldCount = (req, res, next) => {
+    const products = req.body.order.products;
+
+    products.forEach((product) => {
+        const sold = product.sold + product.count;
+
+        Product.findByIdAndUpdate(
+            { _id: product._id },
+            { sold },
+            { new: true },
+            (err, result) => {
+                if (err) {
+                    return res.status(400).json(error);
+                }
 
                 next();
             },
