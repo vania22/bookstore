@@ -22,6 +22,7 @@ const CardItem = ({ product, cart }) => {
         itemCountValidated = 1;
       } else if (itemCountValidated > product.quantity) {
         itemCountValidated = product.quantity;
+        setItemCount(product.quantity);
       }
 
       dispatch({ type: "change_count", payload: { product, itemCount: itemCountValidated } });
