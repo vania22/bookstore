@@ -9,7 +9,7 @@ const requireAuth = passport.authenticate('jwt', { session: false });
 const { userById } = require('../controllers/user');
 const { isAdmin } = require('../controllers/auth');
 
-const { create } = require('../controllers/orders');
+const { create, list } = require('../controllers/orders');
 const { addUserOrderHistory } = require('../controllers/user');
 const {
     updateProductQuantity,
@@ -24,6 +24,8 @@ router.post(
     updateProductSoldCount,
     create,
 );
+
+router.get('/orders/:userId', requireAuth, isAdmin, list);
 
 router.param('userId', userById);
 

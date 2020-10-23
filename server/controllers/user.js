@@ -53,8 +53,6 @@ exports.addUserOrderHistory = (req, res, next) => {
         });
     });
 
-    // console.log(userId);
-
     User.findByIdAndUpdate(
         { _id: userId },
         { $push: { history } },

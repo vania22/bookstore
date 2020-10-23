@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import Layout from "../Layout";
 import { isAuthenticated } from "../../api/auth";
+import { listOrders } from "../../api/orders";
 
 const AdminDashboard = () => {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const getOrders = async () => {
+      const { data } = await listOrders();
+      setOrders(data);
+    };
+
+    getOrders();
+  }, []);
+
   const {
-    user: { _id, name, email, role, history },
+    user: { name, email },
   } = isAuthenticated();
 
   return (
@@ -39,6 +51,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
+      <div>{orders && <p>{JSON.stringify(orders)}</p>}</div>
     </Layout>
   );
 };

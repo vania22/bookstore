@@ -21,3 +21,20 @@ export const createOrder = async (orderInfo) => {
     return error;
   }
 };
+
+export const listOrders = async () => {
+  const { token, user } = isAuthenticated();
+
+  try {
+    const data = axios.get(`${API.ENDPOINT}/orders/${user._id}`, {
+      headers: {
+        authorization: token,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
