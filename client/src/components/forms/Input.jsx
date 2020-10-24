@@ -1,6 +1,6 @@
 import React from "react";
 
-const UserFieldInput = ({ value, onChange, label, type }) => {
+const Input = ({ value, onChange, label, type }) => {
   return (
     <div className="form-group">
       <label htmlFor="name">{label}</label>
@@ -15,4 +15,4 @@ const UserFieldInput = ({ value, onChange, label, type }) => {
   );
 };
 
-export default UserFieldInput;
+export default Input;

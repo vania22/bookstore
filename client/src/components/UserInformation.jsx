@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import UserFieldInput from "../components/forms/UserFieldInput";
+import Input from "./forms/Input";
 import { isAuthenticated } from "../api/auth";
 import { updateUserInfo } from "../api/user";
 
@@ -37,24 +37,14 @@ const UserInformation = () => {
       <ul className="list-group">
         <li className="list-group-item">
           {inputsToggle ? (
-            <UserFieldInput
-              value={username}
-              onChange={(e) => setUsername(e)}
-              label="Name"
-              type="text"
-            />
+            <Input value={username} onChange={(e) => setUsername(e)} label="Name" type="text" />
           ) : (
             `Name: ${name}`
           )}
         </li>
         <li className="list-group-item">
           {inputsToggle ? (
-            <UserFieldInput
-              value={useremail}
-              onChange={(e) => setUseremail(e)}
-              label="Email"
-              type="email"
-            />
+            <Input value={useremail} onChange={(e) => setUseremail(e)} label="Email" type="email" />
           ) : (
             `Email: ${email}`
           )}
