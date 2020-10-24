@@ -14,6 +14,7 @@ import AdminRoute from "./hoc/AdminRoute";
 import AdminDashboard from "./pages/adminPages/AdminDashboard";
 import AddCategory from "./pages/adminPages/AddCategory";
 import AddProduct from "./pages/adminPages/AddProduct";
+import UpdateProduct from "./pages/adminPages/UpdateProduct";
 
 import CartReducerContext from "./helpers/CartContext";
 
@@ -31,6 +32,7 @@ const App = () => {
           <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
           <AdminRoute exact path="/create/category" component={AddCategory} />
           <AdminRoute exact path="/create/product" component={AddProduct} />
+          <AdminRoute exact path="/product/update/:id" component={UpdateProduct} />
           <Route exact path="/signin" component={Signin} />
           <Route exact path="/signup" component={Signup} />
         </CartReducerContext>
