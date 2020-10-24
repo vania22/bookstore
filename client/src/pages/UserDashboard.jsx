@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Layout from "./Layout";
 import UserFieldInput from "../components/forms/UserFieldInput";
 import { isAuthenticated } from "../api/auth";
+import { updateUserInfo } from "../api/user";
 
 const UserDashboard = () => {
   const [username, setUsername] = useState("");
@@ -11,6 +12,7 @@ const UserDashboard = () => {
   const [inputsToggle, setInputsToggle] = useState(false);
 
   const {
+    token,
     user: { _id, name, email, role, history },
   } = isAuthenticated();
 
@@ -18,6 +20,12 @@ const UserDashboard = () => {
     setUsername(name);
     setUseremail(email);
   }, [inputsToggle]);
+
+  const onUserSave = async () => {
+    const { data } = await updateUserInfo(username, useremail);
+    localStorage.setItem("jwt", JSON.stringify({ token, user: data.user }));
+    setInputsToggle(false);
+  };
 
   return (
     <Layout title="Dashboard" description={`Hi there, ${name}!`} className="container">
@@ -41,7 +49,12 @@ const UserDashboard = () => {
             <ul className="list-group">
               <li className="list-group-item">
                 {inputsToggle ? (
-                  <UserFieldInput value={username} onChange={(e) => setUsername(e)} label="Name" />
+                  <UserFieldInput
+                    value={username}
+                    onChange={(e) => setUsername(e)}
+                    label="Name"
+                    type="text"
+                  />
                 ) : (
                   `Name: ${name}`
                 )}
@@ -52,6 +65,7 @@ const UserDashboard = () => {
                     value={useremail}
                     onChange={(e) => setUseremail(e)}
                     label="Email"
+                    type="email"
                   />
                 ) : (
                   `Email: ${email}`
@@ -71,7 +85,7 @@ const UserDashboard = () => {
               )}
 
               {inputsToggle && (
-                <button className="btn btn-success" onClick={() => setInputsToggle(!inputsToggle)}>
+                <button className="btn btn-success" onClick={onUserSave}>
                   Save
                 </button>
               )}

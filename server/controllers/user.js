@@ -21,8 +21,8 @@ exports.read = (req, res) => {
 // Update user object
 exports.update = (req, res) => {
     User.findByIdAndUpdate(
-        req.profile._id,
-        req.body,
+        { _id: req.profile._id },
+        { name: req.body.name, email: req.body.email },
         { new: true },
         (err, user) => {
             if (err || !user) {

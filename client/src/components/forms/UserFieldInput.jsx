@@ -1,12 +1,12 @@
 import React from "react";
 
-const UserFieldInput = ({ value, onChange, label }) => {
+const UserFieldInput = ({ value, onChange, label, type }) => {
   return (
     <div className="form-group">
       <label htmlFor="name">{label}</label>
       <input
         className="form-control"
-        type="text"
+        type={type}
         id={label}
         value={value}
         onChange={(e) => onChange(e.target.value)}
