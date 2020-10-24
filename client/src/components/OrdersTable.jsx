@@ -6,7 +6,6 @@ import OrdersTableItem from "./OrdersTableItem";
 const OrdersTable = () => {
   const [orders, setOrders] = useState([]);
   const [skip, setSkip] = useState(0);
-  const limit = 6;
 
   useEffect(() => {
     const getOrders = async () => {

@@ -7,7 +7,12 @@ const passport = require('passport');
 const requireAuth = passport.authenticate('jwt', { session: false });
 
 // controllers
-const { userById, read, update } = require('../controllers/user');
+const {
+    userById,
+    read,
+    listUserPurchaseHistory,
+    update,
+} = require('../controllers/user');
 const { isAdmin } = require('../controllers/auth');
 
 router.get('/secret/:userId', requireAuth, isAdmin, (req, res) => {
@@ -15,6 +20,7 @@ router.get('/secret/:userId', requireAuth, isAdmin, (req, res) => {
 });
 
 router.get('/user/:userId', requireAuth, read);
+router.get('/user/history/:userId', requireAuth, listUserPurchaseHistory);
 router.put('/user/:userId', requireAuth, update);
 
 router.param('userId', userById);

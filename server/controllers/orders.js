@@ -1,5 +1,4 @@
-const { Order, CartItem } = require('../models/order');
-const User = require('../models/user');
+const { Order } = require('../models/order');
 
 exports.create = (req, res, next) => {
     req.body.order.user = req.profile;
@@ -8,12 +7,12 @@ exports.create = (req, res, next) => {
 
     order.save((error, data) => {
         if (error) {
-            console.log(error);
             return res.status(400).json({
                 error: error.message,
             });
+        } else {
+            return res.json(data);
         }
-        res.json(data);
     });
 };
 

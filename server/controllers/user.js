@@ -25,15 +25,15 @@ exports.update = (req, res) => {
         { name: req.body.name, email: req.body.email },
         { new: true },
         (err, user) => {
-            if (err || !user) {
-                return res.status(404).json({
-                    error: "User can't be udpated",
+            if (err) {
+                return res.status(400).json({
+                    message: "User can't be udpated",
                 });
+            } else {
+                user.password = undefined;
+                user.salt = undefined;
+                return res.json({ user });
             }
-
-            user.password = undefined;
-            user.salt = undefined;
-            return res.json({ user });
         },
     );
 };
@@ -59,10 +59,22 @@ exports.addUserOrderHistory = (req, res, next) => {
         { new: true },
         (err, result) => {
             if (err) {
-                return res.status(400).json(error);
+                return res.status(400).json(err);
             }
-
-            next();
         },
     );
+
+    next();
+};
+
+exports.listUserPurchaseHistory = (req, res) => {
+    const userId = req.profile._id;
+
+    User.findById({ _id: userId }, (err, user) => {
+        if (err) {
+            return res.status(400).json(err);
+        } else {
+            return res.json({ userHistory: user.history });
+        }
+    });
 };

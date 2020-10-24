@@ -4,7 +4,6 @@ import { isAuthenticated } from "../api/auth";
 
 const AdminRoute = ({ component: Component, ...restProps }) => {
   const { user } = isAuthenticated();
-
   return (
     <Route
       {...restProps}

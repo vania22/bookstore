@@ -16,6 +16,7 @@ const Header = () => {
 
   const signOut = () => {
     window.localStorage.removeItem("jwt");
+    window.localStorage.removeItem("cart");
   };
 
   useEffect(() => {

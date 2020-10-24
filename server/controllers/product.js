@@ -303,13 +303,12 @@ exports.updateProductQuantity = (req, res, next) => {
             { new: true },
             (err, result) => {
                 if (err) {
-                    return res.status(400).json(error);
+                    return res.status(400).json(err);
                 }
-
-                next();
             },
         );
     });
+    next();
 };
 
 exports.updateProductSoldCount = (req, res, next) => {
@@ -324,11 +323,10 @@ exports.updateProductSoldCount = (req, res, next) => {
             { new: true },
             (err, result) => {
                 if (err) {
-                    return res.status(400).json(error);
+                    return res.status(400).json(err);
                 }
-
-                next();
             },
         );
     });
+    next();
 };
