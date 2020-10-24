@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 
+import { updateOrderStatus } from "../api/orders";
+
 const OrdersTableItem = ({ order, index }) => {
   const [status, setStatus] = useState("");
 
   const updateStatus = (e) => {
-    setStatus(e.target.status);
+    setStatus(e.target.value);
+    updateOrderStatus(order._id, e.target.value).then((data) => console.log(data));
   };
 
   useEffect(() => {

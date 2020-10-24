@@ -28,3 +28,21 @@ exports.list = (req, res) => {
             return res.json(orders);
         });
 };
+
+exports.updateStatus = (req, res) => {
+    const orderId = req.body.orderId;
+    const newStatus = req.body.status;
+
+    Order.findByIdAndUpdate(
+        { _id: orderId },
+        { status: newStatus },
+        { new: true },
+        (err, result) => {
+            if (err) {
+                return res.status(500).json(error);
+            }
+
+            return res.json(result);
+        },
+    );
+};

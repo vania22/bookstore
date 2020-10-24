@@ -39,4 +39,27 @@ export const listOrders = async () => {
   }
 };
 
-export const updateStatus = async () => {};
+export const updateOrderStatus = async (orderId, status) => {
+  const { token, user } = isAuthenticated();
+
+  try {
+    const data = await axios.put(
+      `${API.ENDPOINT}/order/${user._id}`,
+      {
+        orderId,
+        status,
+      },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    console.log(error);
+
+    return error;
+  }
+};
