@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import Layout from "./Layout";
 import { isAuthenticated } from "../api/auth";
 
 const UserDashboard = () => {
+  const [username, setUsername] = useState("");
+  const [useremail, setUseremail] = useState("");
+  const [inputsToggle, setInputsToggle] = useState(false);
+
   const {
     user: { _id, name, email, role, history },
   } = isAuthenticated();
+
+  useEffect(() => {
+    setUsername(name);
+    setUseremail(email);
+  }, [inputsToggle]);
 
   return (
     <Layout title="Dashboard" description={`Hi there, ${name}!`} className="container">
@@ -26,13 +35,60 @@ const UserDashboard = () => {
           </div>
         </div>
         <div className="col-9">
-          <div className="card mb-5">
+          <div className="card mb-5 userinfo-block">
             <h3 className="card-header">User Information</h3>
             <ul className="list-group">
-              <li className="list-group-item">Name: {name}</li>
-              <li className="list-group-item">Email: {email}</li>
+              <li className="list-group-item">
+                {inputsToggle ? (
+                  <div className="form-group">
+                    <label htmlFor="name">Name</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="name"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                    />
+                  </div>
+                ) : (
+                  `Name: ${name}`
+                )}
+              </li>
+              <li className="list-group-item">
+                {inputsToggle ? (
+                  <div className="form-group">
+                    <label htmlFor="email">Email</label>
+                    <input
+                      className="form-control"
+                      type="email"
+                      id="email"
+                      value={useremail}
+                      onChange={(e) => setUseremail(e.target.value)}
+                    />
+                  </div>
+                ) : (
+                  `Email: ${email}`
+                )}
+              </li>
               <li className="list-group-item">Role: Registered User</li>
             </ul>
+            <div className="buttons-container">
+              {inputsToggle ? (
+                <button className="btn btn-danger" onClick={() => setInputsToggle(!inputsToggle)}>
+                  Cancel
+                </button>
+              ) : (
+                <button className="btn btn-primary" onClick={() => setInputsToggle(!inputsToggle)}>
+                  Edit
+                </button>
+              )}
+
+              {inputsToggle && (
+                <button className="btn btn-success" onClick={() => setInputsToggle(!inputsToggle)}>
+                  Save
+                </button>
+              )}
+            </div>
           </div>
           <div className="card mb-5">
             <h3 className="card-header">Purchase History</h3>
