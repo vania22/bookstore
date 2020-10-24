@@ -38,3 +38,5 @@ export const listOrders = async () => {
     return error;
   }
 };
+
+export const updateStatus = async () => {};

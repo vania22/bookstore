@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import Layout from "../Layout";
+import OrdersTable from "../../components/OrdersTable";
 import { isAuthenticated } from "../../api/auth";
 import { listOrders } from "../../api/orders";
 
@@ -51,7 +52,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
-      <div>{orders && <p>{JSON.stringify(orders)}</p>}</div>
+      <OrdersTable orders={orders} />
     </Layout>
   );
 };
