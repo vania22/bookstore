@@ -245,27 +245,6 @@ exports.listByFilter = (req, res) => {
         });
 };
 
-exports.listBySearch = (req, res) => {
-    let skip = parseInt(req.body.skip);
-    let searchTerm = req.body.searchTerm;
-
-    Product.find({ name: {} })
-        .select('-photo')
-        .populate('category')
-        .limit(1)
-        .exec((err, data) => {
-            if (err) {
-                return res.status(400).json({
-                    error: 'Products not found',
-                });
-            }
-            res.json({
-                size: data.length,
-                data,
-            });
-        });
-};
-
 // Returns list of categories Ids which have products linked to them,
 // ignoring empty categories
 exports.listCategories = (req, res) => {

@@ -70,11 +70,13 @@ exports.addUserOrderHistory = (req, res, next) => {
 exports.listUserPurchaseHistory = (req, res) => {
     const userId = req.profile._id;
 
-    User.findById({ _id: userId }, (err, user) => {
-        if (err) {
-            return res.status(400).json(err);
-        } else {
-            return res.json({ userHistory: user.history });
-        }
-    });
+    User.findById({ _id: userId })
+        .select('history')
+        .exec((err, history) => {
+            if (err) {
+                return res.status(400).json(err);
+            } else {
+                return res.json(history);
+            }
+        });
 };

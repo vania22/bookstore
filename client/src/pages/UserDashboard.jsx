@@ -12,7 +12,7 @@ const UserDashboard = () => {
   useEffect(() => {
     const getHistory = async () => {
       const response = await getUserHistory();
-      setHistory(response.data.userHistory);
+      setHistory(response.data.history);
     };
 
     getHistory();
