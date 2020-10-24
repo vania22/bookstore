@@ -22,11 +22,11 @@ export const createOrder = async (orderInfo) => {
   }
 };
 
-export const listOrders = async () => {
+export const listOrders = async (skip) => {
   const { token, user } = isAuthenticated();
 
   try {
-    const data = axios.get(`${API.ENDPOINT}/orders/${user._id}`, {
+    const data = axios.get(`${API.ENDPOINT}/orders/${user._id}?skip=${skip}`, {
       headers: {
         authorization: token,
       },

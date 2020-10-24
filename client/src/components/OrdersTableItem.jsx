@@ -8,7 +8,7 @@ const OrdersTableItem = ({ order, index }) => {
 
   const updateStatus = (e) => {
     setStatus(e.target.value);
-    updateOrderStatus(order._id, e.target.value).then((data) => console.log(data));
+    updateOrderStatus(order._id, e.target.value);
   };
 
   useEffect(() => {

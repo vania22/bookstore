@@ -1,12 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
+import { listOrders } from "../api/orders";
 import OrdersTableItem from "./OrdersTableItem";
 
-const OrdersTable = ({ orders }) => {
-  console.log(orders);
+const OrdersTable = () => {
+  const [orders, setOrders] = useState([]);
+  const [skip, setSkip] = useState(0);
+  const limit = 6;
+
+  useEffect(() => {
+    const getOrders = async () => {
+      const { data } = await listOrders(skip);
+      setOrders(data);
+    };
+
+    getOrders();
+  }, []);
+
+  const loadMore = async () => {
+    let toSkip = skip + 6;
+
+    const { data } = await listOrders(toSkip);
+    setOrders([...orders, ...data]);
+    setSkip(toSkip);
+  };
 
   return (
-    <div>
+    <div className="order-section-container">
       <table className="table table-bordered">
         <thead>
           <tr>
@@ -23,6 +43,9 @@ const OrdersTable = ({ orders }) => {
           ))}
         </tbody>
       </table>
+      <button className="btn btn-primary mb-5" onClick={loadMore}>
+        Load More
+      </button>
     </div>
   );
 };

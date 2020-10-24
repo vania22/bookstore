@@ -1,23 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import Layout from "../Layout";
 import OrdersTable from "../../components/OrdersTable";
 import { isAuthenticated } from "../../api/auth";
-import { listOrders } from "../../api/orders";
 
 const AdminDashboard = () => {
-  const [orders, setOrders] = useState([]);
-
-  useEffect(() => {
-    const getOrders = async () => {
-      const { data } = await listOrders();
-      setOrders(data);
-    };
-
-    getOrders();
-  }, []);
-
   const {
     user: { name, email },
   } = isAuthenticated();
@@ -52,7 +40,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
-      <OrdersTable orders={orders} />
+      <OrdersTable />
     </Layout>
   );
 };

@@ -18,8 +18,12 @@ exports.create = (req, res, next) => {
 };
 
 exports.list = (req, res) => {
+    let skip = parseInt(req.query.skip);
+
     Order.find()
         .sort([['createdAt', 'desc']])
+        .skip(skip)
+        .limit(6)
         .exec((err, orders) => {
             if (err) {
                 return res.status(500).json(err);
