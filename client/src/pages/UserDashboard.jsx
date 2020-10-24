@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import Layout from "./Layout";
+import UserFieldInput from "../components/forms/UserFieldInput";
 import { isAuthenticated } from "../api/auth";
 
 const UserDashboard = () => {
@@ -40,32 +41,18 @@ const UserDashboard = () => {
             <ul className="list-group">
               <li className="list-group-item">
                 {inputsToggle ? (
-                  <div className="form-group">
-                    <label htmlFor="name">Name</label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      id="name"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                    />
-                  </div>
+                  <UserFieldInput value={username} onChange={(e) => setUsername(e)} label="Name" />
                 ) : (
                   `Name: ${name}`
                 )}
               </li>
               <li className="list-group-item">
                 {inputsToggle ? (
-                  <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input
-                      className="form-control"
-                      type="email"
-                      id="email"
-                      value={useremail}
-                      onChange={(e) => setUseremail(e.target.value)}
-                    />
-                  </div>
+                  <UserFieldInput
+                    value={useremail}
+                    onChange={(e) => setUseremail(e)}
+                    label="Email"
+                  />
                 ) : (
                   `Email: ${email}`
                 )}
