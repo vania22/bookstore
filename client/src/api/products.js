@@ -91,3 +91,21 @@ export const getFilteredProducts = async (skip, filters = {}, searchTerm) => {
     return error;
   }
 };
+
+export const deleteProduct = async (productId) => {
+  const { token, user } = isAuthenticated();
+
+  try {
+    const response = axios.delete(`${API.ENDPOINT}/product/${productId}/${user._id}`, {
+      headers: {
+        authorization: token,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.log(error);
+
+    return error;
+  }
+};

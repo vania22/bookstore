@@ -3,14 +3,17 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 import { getCategories } from "../../api/categories";
-import { createProduct, udpateProduct } from "../../api/products";
+import { createProduct, udpateProduct, deleteProduct } from "../../api/products";
 import ErrorLabel from "./ErrorLabel";
+import { Redirect } from "react-router-dom";
 
 const CreateProductForm = ({ id, initValues }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(null);
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
+  const [disabled, setDisabled] = useState(false);
+  const [isRedirect, setIsRedirect] = useState(false);
 
   // This useEffect fetches categories to set them to <Select/> input
   useEffect(() => {
@@ -54,6 +57,15 @@ const CreateProductForm = ({ id, initValues }) => {
       error = "Image size must be less than 3mb";
     }
     return error;
+  };
+
+  const deleteProductOnClick = () => {
+    deleteProduct(id)
+      .then((data) => {
+        setDisabled(true);
+        setIsRedirect(true);
+      })
+      .catch((e) => console.log(e.message));
   };
 
   /**
@@ -244,11 +256,20 @@ const CreateProductForm = ({ id, initValues }) => {
             <button
               className="btn btn-primary mr-4"
               type="submit"
-              disabled={formik.isSubmitting || !formik.isValid}
+              disabled={formik.isSubmitting || !formik.isValid || disabled}
             >
               {id ? "Update" : "Create"}
             </button>
-            {id && <button className="btn btn-danger ml-5">Delete Product</button>}
+            {id && (
+              <button
+                type="button"
+                onClick={deleteProductOnClick}
+                disabled={disabled}
+                className="btn btn-danger ml-5"
+              >
+                Delete Product
+              </button>
+            )}
           </div>
         </Form>
       )}
@@ -257,6 +278,7 @@ const CreateProductForm = ({ id, initValues }) => {
 
   return (
     <>
+      {isRedirect && <Redirect to="/admin/dashboard" />}
       {success && id && (
         <div className="alert alert-info">{`Product "${name}" was successfully updated`}</div>
       )}

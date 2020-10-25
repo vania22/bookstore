@@ -237,7 +237,6 @@ exports.listByFilter = (req, res) => {
                     error: 'Products not found',
                 });
             }
-            console.log(data);
             return res.json({
                 data,
             });
@@ -261,7 +260,7 @@ exports.productById = (req, res, next, id) => {
     Product.findById(id).exec((err, product) => {
         if (err || !product) {
             return res.status(404).json({
-                error: err.message,
+                error: err,
             });
         }
         req.product = product;
