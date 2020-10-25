@@ -17,9 +17,9 @@ Tech-stack:
     Mongoose,
     MongoDB,
     
-  Front-end:
   
-    React Js,
+  Front-end:
+    React Js
     Bootstrap,
     Braintree for payments,
     Formik,
