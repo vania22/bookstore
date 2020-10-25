@@ -18,6 +18,7 @@ Tech-stack:
     MongoDB,
     
   Front-end:
+  
     React Js,
     Bootstrap,
     Braintree for payments,
