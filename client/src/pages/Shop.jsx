@@ -19,7 +19,8 @@ const Shop = () => {
 
   useEffect(() => {
     const loadInitalProducts = async () => {
-      setProducts(await getProducts("sold"));
+      const { data } = await getFilteredProducts(0, filters, searchTerm);
+      setProducts(data);
       setLoading(false);
     };
     loadInitalProducts();
@@ -32,7 +33,7 @@ const Shop = () => {
 
   const loadFilteredProducts = async () => {
     setLoading(true);
-    const { data } = await getFilteredProducts(0, limit, filters, searchTerm);
+    const { data } = await getFilteredProducts(0, filters, searchTerm);
     setProducts(data);
     setLoading(false);
     setSearchTerm("");
@@ -46,7 +47,7 @@ const Shop = () => {
   const loadMore = async () => {
     let toSkip = skip + limit;
 
-    const { data } = await getFilteredProducts(toSkip, limit, filters, searchTerm);
+    const { data } = await getFilteredProducts(toSkip, filters, searchTerm);
     setProducts([...products, ...data]);
     setSkip(toSkip);
   };
@@ -75,8 +76,8 @@ const Shop = () => {
               <>
                 <h2 className="mb-4">Products</h2>
                 <div className="row">
-                  {products.map((product) => (
-                    <div className="product-container row" key={product._id}>
+                  {products.map((product, index) => (
+                    <div className="product-container row" key={index}>
                       <CardItem product={product} />
                     </div>
                   ))}

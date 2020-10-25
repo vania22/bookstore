@@ -242,12 +242,13 @@ const CreateProductForm = ({ id, initValues }) => {
 
           <div>
             <button
-              className="btn btn-primary"
+              className="btn btn-primary mr-4"
               type="submit"
               disabled={formik.isSubmitting || !formik.isValid}
             >
               {id ? "Update" : "Create"}
             </button>
+            {id && <button className="btn btn-danger ml-5">Delete Product</button>}
           </div>
         </Form>
       )}

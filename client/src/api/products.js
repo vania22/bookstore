@@ -74,9 +74,8 @@ export const getRelatedProducts = async (productId) => {
   }
 };
 
-export const getFilteredProducts = async (skip, limit, filters = {}, searchTerm) => {
+export const getFilteredProducts = async (skip, filters = {}, searchTerm) => {
   const body = {
-    limit,
     skip,
     filters: {
       category: filters.categories,

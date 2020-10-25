@@ -206,7 +206,6 @@ exports.listRelated = (req, res) => {
 exports.listByFilter = (req, res) => {
     let order = req.query.order ? req.query.order : 'desc';
     let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
-    let limit = req.body.limit ? parseInt(req.body.limit) : 6;
     let searchTerm = req.body.searchTerm ? req.body.searchTerm : '';
     let skip = parseInt(req.body.skip);
     let findArgs = {};
@@ -231,15 +230,15 @@ exports.listByFilter = (req, res) => {
         .populate('category')
         .sort([[sortBy, order]])
         .skip(skip)
-        .limit(limit)
+        .limit(6)
         .exec((err, data) => {
             if (err) {
                 return res.status(400).json({
                     error: 'Products not found',
                 });
             }
-            res.json({
-                size: data.length,
+            console.log(data);
+            return res.json({
                 data,
             });
         });
