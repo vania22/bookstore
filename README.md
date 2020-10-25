@@ -8,17 +8,25 @@ Also users can see their purchase history in their personal dashboard.
 Users have the possibility of sorting the products based on categories and price.
 
 Tech-stack:
+
   Back-end:
-    Node Js
-    Express
-    JWT
-    Passport
-    Mongoose
-    MongoDB
+    Node Js,
+    Express,
+    JWT,
+    Passport,
+    Mongoose,
+    MongoDB,
+    
   Front-end:
-    React Js
-    Bootstrap
-    Braintree for payments
-    Formik
+    React Js,
+    Bootstrap,
+    Braintree for payments,
+    Formik,
+    
+Project styles are simple, because for me the real goal of this application was to practice constructing full-stack application logic - wiring front-end and back-end, practicing on doing CRUD. So styles are really just to add some a bit nicer look, but no more than that :)
+
+To start up the project, simply run "yarn install" in server and client directories and then run "yarn start" in those directories. Also start your mongoDB server.
+
+Thank you for being interested in this :)
     
 
