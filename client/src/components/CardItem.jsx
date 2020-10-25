@@ -7,11 +7,8 @@ import { isAuthenticated } from "../api/auth";
 const CardItem = ({ product, cart }) => {
   const { dispatch } = useContext(CartContext);
   const [itemCount, setItemCount] = useState(0);
-  const {
-    user: { role },
-  } = isAuthenticated();
+  const { user } = isAuthenticated();
 
-  console.log(role);
   // Set itemCount to the count of the item in the cart (and use this number in the input value)
   useEffect(() => {
     if (cart) {
@@ -59,7 +56,11 @@ const CardItem = ({ product, cart }) => {
           </div>
         )}
 
-        <img src={`${API.ENDPOINT}/product/photo/${product._id}`} className="image card-img-top" />
+        <img
+          src={`${API.ENDPOINT}/product/photo/${product._id}`}
+          alt={product.name}
+          className="image card-img-top"
+        />
         <div className="product-body">
           <p className="description">{product.description}</p>
           <p>$ {product.price}</p>
@@ -87,7 +88,7 @@ const CardItem = ({ product, cart }) => {
             </button>
           )}
         </div>
-        {role === 1 && (
+        {user && user.role === 1 && (
           <Link to={`/product/update/${product._id}`}>
             <button className="btn btn-warning text-white p-1 ml-3 mt-2">Update Product</button>
           </Link>

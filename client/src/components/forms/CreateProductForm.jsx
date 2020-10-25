@@ -3,10 +3,10 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 import { getCategories } from "../../api/categories";
-import { createProduct } from "../../api/products";
+import { createProduct, udpateProduct } from "../../api/products";
 import ErrorLabel from "./ErrorLabel";
 
-const CreateProductForm = ({ isUpdate, initValues }) => {
+const CreateProductForm = ({ id, initValues }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(null);
   const [name, setName] = useState("");
@@ -69,7 +69,7 @@ const CreateProductForm = ({ isUpdate, initValues }) => {
    * setSubmitting(false) - to make Submit button to be not disabled
    */
   const onSubmit = (values, onSubmitProps) => {
-    if (!isUpdate) {
+    if (!id) {
       createProduct(
         values,
         () => {
@@ -84,6 +84,20 @@ const CreateProductForm = ({ isUpdate, initValues }) => {
         }
       );
     } else {
+      udpateProduct(
+        values,
+        id,
+        () => {
+          onSubmitProps.resetForm({});
+          setName(values.name);
+          setSuccess(true);
+          setTimeout(() => setSuccess(null), 5000);
+        },
+        () => {
+          setError(true);
+          setTimeout(() => setError(false), 5000);
+        }
+      );
     }
 
     onSubmitProps.setSubmitting(false);
@@ -232,7 +246,7 @@ const CreateProductForm = ({ isUpdate, initValues }) => {
               type="submit"
               disabled={formik.isSubmitting || !formik.isValid}
             >
-              Create
+              {id ? "Update" : "Create"}
             </button>
           </div>
         </Form>
@@ -242,7 +256,10 @@ const CreateProductForm = ({ isUpdate, initValues }) => {
 
   return (
     <>
-      {success && (
+      {success && id && (
+        <div className="alert alert-info">{`Product "${name}" was successfully updated`}</div>
+      )}
+      {success && !id && (
         <div className="alert alert-info">{`Product "${name}" was successfully created`}</div>
       )}
       {error && (
@@ -250,8 +267,8 @@ const CreateProductForm = ({ isUpdate, initValues }) => {
           Error has occured, please check your form values and try again
         </div>
       )}
-      {isUpdate && initValues ? FormikComponent() : null}
-      {!isUpdate && FormikComponent()}
+      {id && initValues ? FormikComponent() : null}
+      {!id && FormikComponent()}
     </>
   );
 };

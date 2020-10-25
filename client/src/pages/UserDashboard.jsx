@@ -10,12 +10,14 @@ const UserDashboard = () => {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    const getHistory = async () => {
-      const response = await getUserHistory();
-      setHistory(response.data.history);
-    };
+    // const getHistory = async () => {
+    //   const response = await getUserHistory();
+    //   setHistory(response.data.history);
+    // };
 
-    getHistory();
+    getUserHistory().then((response) => setHistory(response.data.history));
+
+    // getHistory();
   }, []);
 
   const {
@@ -40,12 +42,14 @@ const UserDashboard = () => {
           <div className="card mb-5">
             <h3 className="card-header">Purchase History</h3>
             <ul className="list-group">
-              {history.length > 0 ? (
+              {history && history.length > 0 ? (
                 history.map((item, index) => (
                   <li key={index} className="list-group-item">
-                    <p>Product: {item.name}</p>
-                    <p>quantity: {item.count}</p>
-                    <p>amount paid: {item.price}</p>
+                    <p>
+                      Product: <b>{item.name}</b>
+                    </p>
+                    <p>quantity: {item.count} pc(s)</p>
+                    <p>amount paid: ${item.price}</p>
                   </li>
                 ))
               ) : (

@@ -12,7 +12,7 @@ const SingleProduct = () => {
   const { id: productId } = useParams();
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProduct] = useState([]);
-  const { state, dispatch } = useContext(CartContext);
+  const { dispatch } = useContext(CartContext);
 
   useEffect(() => {
     const fetchProduct = async () => {

@@ -10,17 +10,14 @@ const OrdersTable = () => {
   useEffect(() => {
     const getOrders = async () => {
       const { data } = await listOrders(skip);
-      setOrders(data);
+      setOrders([...orders, ...data]);
     };
 
     getOrders();
-  }, []);
+  }, [skip]);
 
   const loadMore = async () => {
     let toSkip = skip + 6;
-
-    const { data } = await listOrders(toSkip);
-    setOrders([...orders, ...data]);
     setSkip(toSkip);
   };
 

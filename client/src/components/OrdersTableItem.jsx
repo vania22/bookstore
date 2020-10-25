@@ -13,7 +13,7 @@ const OrdersTableItem = ({ order, index }) => {
 
   useEffect(() => {
     setStatus(order.status);
-  }, []);
+  }, [order.status]);
 
   return (
     <tr>

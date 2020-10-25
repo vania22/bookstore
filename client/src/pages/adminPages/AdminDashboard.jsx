@@ -8,7 +8,7 @@ import { isAuthenticated } from "../../api/auth";
 
 const AdminDashboard = () => {
   const {
-    user: { name, email },
+    user: { name },
   } = isAuthenticated();
 
   return (

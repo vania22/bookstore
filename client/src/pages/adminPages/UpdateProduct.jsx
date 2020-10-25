@@ -19,7 +19,7 @@ const AddProduct = () => {
         description,
         price,
         quantity,
-        shipping,
+        shipping: shipping.toString(),
         category,
         photo: "",
       });
@@ -34,7 +34,7 @@ const AddProduct = () => {
       description="Update product on this page"
       className="container col-md-4 offset-md-4"
     >
-      <CreateProductForm isUpdate initValues={productValues && productValues} />
+      <CreateProductForm id={id} initValues={productValues && productValues} />
       <div className="mt-4">
         <Link to="/admin/dashboard">Go back to dashboard</Link>
       </div>

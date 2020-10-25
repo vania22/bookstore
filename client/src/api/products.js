@@ -22,6 +22,26 @@ export const createProduct = async (values, onSuccessCallBack, onErrorCallback) 
   }
 };
 
+export const udpateProduct = async (values, productId, onSuccessCallBack, onErrorCallback) => {
+  const { token, user } = isAuthenticated();
+  const formData = new FormData();
+  for (let key in values) {
+    formData.append(key, values[key]);
+  }
+
+  try {
+    let response = await axios.put(`${API.ENDPOINT}/product/${productId}/${user._id}`, formData, {
+      headers: {
+        authorization: token,
+      },
+    });
+
+    onSuccessCallBack(response);
+  } catch (error) {
+    onErrorCallback(error);
+  }
+};
+
 export const getProducts = async (sortBy) => {
   try {
     const { data } = await axios.get(

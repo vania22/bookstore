@@ -21,6 +21,7 @@ export const updateUserInfo = async (name, email) => {
 };
 
 export const getUserHistory = async () => {
+  const { token, user } = isAuthenticated();
   try {
     const response = await axios.get(`${API.ENDPOINT}/user/history/${user._id}`, {
       headers: {
